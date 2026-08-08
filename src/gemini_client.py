@@ -16,7 +16,7 @@ class GeminiClient:
     def __init__(
         self,
         api_key: str = None,
-        model: str = "gemini-1.5-flash",
+        model: str = "gemini-3.5-flash",
         max_retries: int = 3,
         initial_delay: float = 1.0,
     ):
@@ -26,7 +26,7 @@ class GeminiClient:
         Parameters:
             api_key (str): Optional API key. If not provided, it will check the
                            GEMINI_API_KEY environment variable.
-            model (str): Gemini model identifier (default: "gemini-1.5-flash").
+            model (str): Gemini model identifier (default: "gemini-3.5-flash").
             max_retries (int): Maximum number of retry attempts for transient errors.
             initial_delay (float): Initial delay in seconds for exponential backoff.
         """

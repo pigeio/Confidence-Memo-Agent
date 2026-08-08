@@ -19,7 +19,7 @@ class TestGeminiClient(unittest.TestCase):
 
         self.assertEqual(response, "This is a confidence memo.")
         mock_client.models.generate_content.assert_called_once_with(
-            model="gemini-1.5-flash", contents="Test prompt"
+            model="gemini-3.5-flash", contents="Test prompt"
         )
 
     def test_empty_prompt_validation(self):
@@ -47,7 +47,7 @@ class TestGeminiClient(unittest.TestCase):
         mock_genai_client_class.return_value = mock_client
 
         # Simulate a transient 429 rate limit error on the first call, then success
-        mock_error = errors.APIError(message="Rate limit exceeded", code=429)
+        mock_error = errors.APIError(429, {"message": "Rate limit exceeded"})
         mock_response = MagicMock()
         mock_response.text = "Success after retry."
         mock_client.models.generate_content.side_effect = [mock_error, mock_response]
@@ -65,7 +65,7 @@ class TestGeminiClient(unittest.TestCase):
         mock_genai_client_class.return_value = mock_client
 
         # Simulate a non-transient 403 Forbidden error
-        mock_error = errors.APIError(message="Invalid API Key", code=403)
+        mock_error = errors.APIError(403, {"message": "Invalid API Key"})
         mock_client.models.generate_content.side_effect = mock_error
 
         client = GeminiClient(api_key="fake-key", max_retries=2, initial_delay=0.01)
@@ -82,7 +82,7 @@ class TestGeminiClient(unittest.TestCase):
         mock_genai_client_class.return_value = mock_client
 
         # Simulate persistent 503 Service Unavailable errors
-        mock_error = errors.APIError(message="Service Unavailable", code=503)
+        mock_error = errors.APIError(503, {"message": "Service Unavailable"})
         mock_client.models.generate_content.side_effect = mock_error
 
         client = GeminiClient(api_key="fake-key", max_retries=2, initial_delay=0.01)
