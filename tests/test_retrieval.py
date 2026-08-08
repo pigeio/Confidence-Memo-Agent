@@ -1,4 +1,5 @@
 import pytest
+import numpy as np
 import pandas as pd
 from src.retrieval import retrieve_tickets
 
@@ -36,17 +37,19 @@ def sample_tickets_df() -> pd.DataFrame:
 # 1. Normal keyword match
 def test_normal_keyword_match(sample_tickets_df):
     """Verify that a standard keyword matches relevant tickets."""
-    result = retrieve_tickets(sample_tickets_df, ["export"])
+    result, scores = retrieve_tickets(sample_tickets_df, ["export"])
     assert len(result) == 1
     assert result.iloc[0]["ticket_id"] == 2
+    assert len(scores) == 1
+    assert scores[0] > 0.0
 
 
 # 2. Case-insensitive matching
 def test_case_insensitive_matching(sample_tickets_df):
     """Verify that keyword matching is case-insensitive (e.g. 'DARK' matches 'Dark')."""
-    result_upper = retrieve_tickets(sample_tickets_df, ["DARK"])
-    result_lower = retrieve_tickets(sample_tickets_df, ["dark"])
-    
+    result_upper, scores_upper = retrieve_tickets(sample_tickets_df, ["DARK"])
+    result_lower, scores_lower = retrieve_tickets(sample_tickets_df, ["dark"])
+
     assert len(result_upper) == 1
     assert len(result_lower) == 1
     assert result_upper.iloc[0]["ticket_id"] == result_lower.iloc[0]["ticket_id"] == 1
@@ -55,7 +58,7 @@ def test_case_insensitive_matching(sample_tickets_df):
 # 3. Matching in the topic column
 def test_matching_in_topic_column(sample_tickets_df):
     """Verify matching occurs when the keyword is present only in the 'topic' column."""
-    result = retrieve_tickets(sample_tickets_df, ["support"])
+    result, scores = retrieve_tickets(sample_tickets_df, ["support"])
     assert len(result) == 1
     assert result.iloc[0]["ticket_id"] == 1
 
@@ -63,7 +66,7 @@ def test_matching_in_topic_column(sample_tickets_df):
 # 4. Matching in the message column
 def test_matching_in_message_column(sample_tickets_df):
     """Verify matching occurs when the keyword is present only in the 'message' column."""
-    result = retrieve_tickets(sample_tickets_df, ["background"])
+    result, scores = retrieve_tickets(sample_tickets_df, ["background"])
     assert len(result) == 1
     assert result.iloc[0]["ticket_id"] == 1
 
@@ -71,27 +74,30 @@ def test_matching_in_message_column(sample_tickets_df):
 # 5. Multiple keywords
 def test_multiple_keywords_match(sample_tickets_df):
     """Verify that providing multiple keywords matches any ticket containing at least one keyword."""
-    result = retrieve_tickets(sample_tickets_df, ["dark", "export"])
+    result, scores = retrieve_tickets(sample_tickets_df, ["dark", "export"])
     assert len(result) == 2
     assert set(result["ticket_id"]) == {1, 2}
+    assert len(scores) == 2
 
 
 # 6. No matching tickets
 def test_no_matching_tickets(sample_tickets_df):
     """Verify that searching for a non-existent keyword returns an empty DataFrame."""
-    result = retrieve_tickets(sample_tickets_df, ["nonexistent_keyword"])
+    result, scores = retrieve_tickets(sample_tickets_df, ["nonexistent_keyword"])
     assert isinstance(result, pd.DataFrame)
     assert result.empty
     assert list(result.columns) == list(sample_tickets_df.columns)
+    assert len(scores) == 0
 
 
 # 7. Empty DataFrame
 def test_empty_dataframe():
     """Verify that searching on an empty DataFrame with required columns returns an empty DataFrame."""
     empty_df = pd.DataFrame(columns=["ticket_id", "topic", "message"])
-    result = retrieve_tickets(empty_df, ["dark"])
+    result, scores = retrieve_tickets(empty_df, ["dark"])
     assert isinstance(result, pd.DataFrame)
     assert result.empty
+    assert len(scores) == 0
 
 
 # 8. Empty keyword list
@@ -104,15 +110,15 @@ def test_empty_keyword_list(sample_tickets_df):
 # 9. Special-character keywords (e.g. C++, C#, Node.js)
 def test_special_character_keywords(sample_tickets_df):
     """Verify that special character keywords (C++, C#, Node.js) retrieve semantically relevant technical tickets."""
-    result_cpp = retrieve_tickets(sample_tickets_df, ["C++"])
+    result_cpp, _ = retrieve_tickets(sample_tickets_df, ["C++"])
     assert len(result_cpp) >= 1
     assert 3 in list(result_cpp["ticket_id"])
 
-    result_csharp = retrieve_tickets(sample_tickets_df, ["C#"])
+    result_csharp, _ = retrieve_tickets(sample_tickets_df, ["C#"])
     assert len(result_csharp) >= 1
     assert 4 in list(result_csharp["ticket_id"])
 
-    result_nodejs = retrieve_tickets(sample_tickets_df, ["Node.js"])
+    result_nodejs, _ = retrieve_tickets(sample_tickets_df, ["Node.js"])
     assert len(result_nodejs) >= 1
     assert 4 in list(result_nodejs["ticket_id"])
 
@@ -141,8 +147,9 @@ def test_invalid_input_types(sample_tickets_df):
         retrieve_tickets("not_a_dataframe", ["dark"])
 
     # Single string is valid in semantic search
-    result_str_query = retrieve_tickets(sample_tickets_df, "dark")
+    result_str_query, scores = retrieve_tickets(sample_tickets_df, "dark")
     assert isinstance(result_str_query, pd.DataFrame)
+    assert isinstance(scores, np.ndarray)
 
     # Invalid query type (int instead of string/list)
     with pytest.raises(TypeError, match="must be a string or a list of strings"):
@@ -151,3 +158,14 @@ def test_invalid_input_types(sample_tickets_df):
     # Non-string element inside keywords list
     with pytest.raises(ValueError, match="contains no valid non-empty strings"):
         retrieve_tickets(sample_tickets_df, ["   "])
+
+
+# 13. Similarity scores are returned alongside tickets
+def test_similarity_scores_returned(sample_tickets_df):
+    """Verify that retrieve_tickets returns similarity scores as a numpy array."""
+    result, scores = retrieve_tickets(sample_tickets_df, ["dark mode"])
+    assert isinstance(scores, np.ndarray)
+    assert len(scores) == len(result)
+    # Scores should be in descending order
+    for i in range(len(scores) - 1):
+        assert scores[i] >= scores[i + 1]

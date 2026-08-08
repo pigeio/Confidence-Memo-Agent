@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from src.config import DEFAULT_TOP_K, DEFAULT_SIMILARITY_THRESHOLD
 from src.embedding_generator import EmbeddingGenerator
@@ -24,7 +25,7 @@ class SemanticSearchEngine:
         query: str | list[str],
         top_k: int = DEFAULT_TOP_K,
         threshold: float = DEFAULT_SIMILARITY_THRESHOLD,
-    ) -> pd.DataFrame:
+    ) -> tuple[pd.DataFrame, np.ndarray]:
         """
         Perform semantic search over ticket DataFrame using query text.
 
@@ -35,13 +36,15 @@ class SemanticSearchEngine:
             threshold (float): Minimum cosine similarity score threshold.
 
         Returns:
-            pd.DataFrame: Subset DataFrame containing top-k relevant tickets sorted by relevance.
+            tuple[pd.DataFrame, np.ndarray]: A tuple of:
+                - Subset DataFrame containing top-k relevant tickets sorted by relevance.
+                - 1D numpy array of similarity scores corresponding to each returned ticket.
         """
         if not isinstance(df, pd.DataFrame):
             raise TypeError("df must be a pandas DataFrame")
 
         if df.empty:
-            return df.copy()
+            return df.copy(), np.array([], dtype=np.float32)
 
         # Format query string
         if isinstance(query, list):
@@ -74,11 +77,12 @@ class SemanticSearchEngine:
         )
 
         if not ranked:
-            return pd.DataFrame(columns=df.columns)
+            return pd.DataFrame(columns=df.columns), np.array([], dtype=np.float32)
 
         indices = [idx for idx, _ in ranked]
+        matched_scores = np.array([score for _, score in ranked], dtype=np.float32)
         matched_df = df.iloc[indices].copy()
-        return matched_df
+        return matched_df, matched_scores
 
 
 # Module-level singleton instance for zero-reinitialization overhead
@@ -90,9 +94,12 @@ def search_tickets(
     query: str | list[str],
     top_k: int = DEFAULT_TOP_K,
     threshold: float = DEFAULT_SIMILARITY_THRESHOLD,
-) -> pd.DataFrame:
+) -> tuple[pd.DataFrame, np.ndarray]:
     """
     Module-level function wrapper utilizing a singleton SemanticSearchEngine.
+
+    Returns:
+        tuple[pd.DataFrame, np.ndarray]: Matched tickets and their similarity scores.
     """
     global _search_engine_instance
     if _search_engine_instance is None:

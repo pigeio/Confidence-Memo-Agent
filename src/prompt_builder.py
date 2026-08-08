@@ -53,18 +53,23 @@ def format_tickets(df: pd.DataFrame) -> str:
 def format_scoring_summary(scoring_info: dict = None) -> str:
     """
     Format scoring_info dictionary into a readable summary string.
+    Handles the no-evidence scenario when a 'reason' key is present.
     """
     if not scoring_info or not isinstance(scoring_info, dict):
         return "Confidence Level: Not Provided | Evidence Score: N/A"
 
     confidence = scoring_info.get("confidence", "N/A")
     score = scoring_info.get("score", "N/A")
+    reason = scoring_info.get("reason", None)
     factors = scoring_info.get("factors", {})
 
     summary_lines = [
         f"Confidence Level: {confidence}",
         f"Evidence Score: {score} / 100",
     ]
+
+    if reason:
+        summary_lines.append(f"Reason: {reason}")
 
     if factors:
         summary_lines.append("Factor Breakdown:")

@@ -1,8 +1,9 @@
+import numpy as np
 import pandas as pd
 from src.semantic_search import search_tickets
 
 
-def retrieve_tickets(df: pd.DataFrame, keywords: list[str]) -> pd.DataFrame:
+def retrieve_tickets(df: pd.DataFrame, keywords: list[str]) -> tuple[pd.DataFrame, np.ndarray]:
     """
     Retrieve support tickets that semantically match any of the given keywords
     or search query in the topic or message columns.
@@ -13,7 +14,9 @@ def retrieve_tickets(df: pd.DataFrame, keywords: list[str]) -> pd.DataFrame:
         keywords (list[str]): A list of keywords or query strings to search for.
 
     Returns:
-        pd.DataFrame: A new DataFrame containing only the matching tickets.
+        tuple[pd.DataFrame, np.ndarray]: A tuple of:
+            - DataFrame containing only the matching tickets.
+            - 1D numpy array of similarity scores for each matched ticket.
 
     Raises:
         TypeError: If df is not a pandas DataFrame or keywords is not a list.
@@ -21,4 +24,3 @@ def retrieve_tickets(df: pd.DataFrame, keywords: list[str]) -> pd.DataFrame:
                     or keywords contains non-string/empty values.
     """
     return search_tickets(df, keywords)
-

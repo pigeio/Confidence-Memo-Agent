@@ -13,6 +13,14 @@ Support Tickets Evidence Base:
 IMPORTANT INSTRUCTIONS:
 Do NOT calculate or invent a new Confidence Level or Evidence Score. You must accept and explain the provided Confidence Level and Evidence Score.
 
+If Evidence Score is 0 because no relevant evidence exists:
+- Explain that insufficient customer evidence was found for this proposal.
+- Do NOT invent or fabricate supporting evidence.
+- Do NOT make feature recommendations based on missing data.
+- Do NOT guess what customers might want.
+- Recommend collecting more customer evidence before making a decision.
+- Maintain honest uncertainty throughout.
+
 You must output an Evidence Memo in the following markdown format:
 
 Confidence: [State the exact Confidence Level provided in the Evidence Score above] (e.g. High / Moderate / Low)
