@@ -11,11 +11,11 @@ ticket_id,topic,message,created_at
 10,Text size adjust,Can we adjust the font size in the app? The current font is too small to read.,2026-08-04 10:00:00
 11,Eye strain under fluorescent lights,The interface needs a dark mode or a night mode. The glare causes eye strain after an hour of use.,2026-08-04 13:10:00
 12,Notification delay,I am receiving push notifications 10 minutes late on my Android device.,2026-08-04 16:50:00
-13,Search button missing,After the last update, the search button is hidden on mobile view.,2026-08-05 09:15:00
+13,Search button missing,"After the last update, the search button is hidden on mobile view.",2026-08-05 09:15:00
 14,Integrate with Slack,Do you plan to add a Slack integration? We want to receive updates in our channels.,2026-08-05 11:30:00
 15,Exporting transactions,Can we get a download CSV button for transaction history?,2026-08-05 14:40:00
 16,Password reset link,The password reset link I received has expired. Please send a new one.,2026-08-06 08:30:00
 17,Dark mode interface,Any plans for dark mode? My eyes are burning after staring at the screen for 8 hours.,2026-08-06 12:00:00
 18,Language support,When will you add Spanish translation to the dashboard?,2026-08-06 15:00:00
 19,API Access,Do you provide API keys for developers? I want to automate my report retrieval.,2026-08-07 10:15:00
-20,Page load speed,The dashboard loads very slowly, sometimes taking up to 10 seconds.,2026-08-07 14:30:00
+20,Page load speed,"The dashboard loads very slowly, sometimes taking up to 10 seconds.",2026-08-07 14:30:00
