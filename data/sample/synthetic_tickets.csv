@@ -1,0 +1,21 @@
+ticket_id,topic,message,created_at
+1,Dark mode support,The screen is too bright at night. Can we get dark mode? It hurts my eyes.,2026-08-01 09:00:00
+2,Eye strain,I get severe eye strain when working late hours in the app. A dark theme would help.,2026-08-01 10:30:00
+3,Export data,Is there a way to export my dashboard data to CSV? I need it for weekly reports.,2026-08-01 11:15:00
+4,App crash,The app crashes every time I try to upload a large profile image.,2026-08-02 08:45:00
+5,Dark Mode?,Please add dark mode. Every other app has it and it's essential for night developers.,2026-08-02 14:20:00
+6,Billing question,I was billed twice this month. Please refund the extra charge.,2026-08-02 16:00:00
+7,Feature Request: CSV Export,We really need a CSV export feature for our transactions list.,2026-08-03 09:30:00
+8,Dark theme request,I would love to see a dark mode option. The white background is blinding.,2026-08-03 11:00:00
+9,Login failure,I am unable to log in with my Google account. It shows an authentication error.,2026-08-03 15:45:00
+10,Text size adjust,Can we adjust the font size in the app? The current font is too small to read.,2026-08-04 10:00:00
+11,Eye strain under fluorescent lights,The interface needs a dark mode or a night mode. The glare causes eye strain after an hour of use.,2026-08-04 13:10:00
+12,Notification delay,I am receiving push notifications 10 minutes late on my Android device.,2026-08-04 16:50:00
+13,Search button missing,After the last update, the search button is hidden on mobile view.,2026-08-05 09:15:00
+14,Integrate with Slack,Do you plan to add a Slack integration? We want to receive updates in our channels.,2026-08-05 11:30:00
+15,Exporting transactions,Can we get a download CSV button for transaction history?,2026-08-05 14:40:00
+16,Password reset link,The password reset link I received has expired. Please send a new one.,2026-08-06 08:30:00
+17,Dark mode interface,Any plans for dark mode? My eyes are burning after staring at the screen for 8 hours.,2026-08-06 12:00:00
+18,Language support,When will you add Spanish translation to the dashboard?,2026-08-06 15:00:00
+19,API Access,Do you provide API keys for developers? I want to automate my report retrieval.,2026-08-07 10:15:00
+20,Page load speed,The dashboard loads very slowly, sometimes taking up to 10 seconds.,2026-08-07 14:30:00

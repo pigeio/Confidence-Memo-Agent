@@ -1,11 +1,23 @@
 # Confidence Memo Agent
 
-An AI agent that tells teams honestly what their data does and doesn't support before they build a feature.
+An AI-powered evidence engine that helps product teams make better decisions by telling them what their customer data does and doesn't support.
 
 ## Current Status
 
-✅ Prototype completed
+- ✅ Phase 0 Complete
+- 🚧 Phase 1 In Progress
 
-## Next Goal
+## Features
 
-Phase 1 MVP
+- Evidence Memo
+- Decision Memo (Coming Soon)
+- Semantic Search (Coming Soon)
+- Confidence Engine (Coming Soon)
+
+## Tech Stack
+
+- Python
+- Google Gemini
+- Sentence Transformers
+- FAISS
+- Streamlit
