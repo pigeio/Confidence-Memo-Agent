@@ -1,84 +1,174 @@
-import unittest
-import tempfile
-import os
+import pytest
 import pandas as pd
 from src.prompt_builder import build_evidence_prompt, format_tickets
 
 
-class TestPromptBuilder(unittest.TestCase):
-    def setUp(self):
-        self.sample_data = {
-            "ticket_id": [1, 2],
-            "topic": ["Dark Mode", "CSV Export"],
-            "message": ["Please add dark mode", "We want CSV export"],
+@pytest.fixture
+def sample_proposal() -> str:
+    """Fixture providing a standard feature proposal string."""
+    return "Add dark mode support"
+
+
+@pytest.fixture
+def sample_tickets_df() -> pd.DataFrame:
+    """Fixture providing a small synthetic DataFrame of support tickets."""
+    return pd.DataFrame([
+        {
+            "ticket_id": 101,
+            "topic": "Dark Mode Request",
+            "message": "Please add a dark theme option."
+        },
+        {
+            "ticket_id": 102,
+            "topic": "CSV Export",
+            "message": "We need CSV download functionality."
         }
-        self.df = pd.DataFrame(self.sample_data)
-        self.proposal = "Add dark mode support"
-
-    def test_format_tickets_empty(self):
-        empty_df = pd.DataFrame(columns=["ticket_id", "topic", "message"])
-        result = format_tickets(empty_df)
-        self.assertEqual(result, "No tickets found matching the keyword criteria.")
-
-    def test_format_tickets_valid(self):
-        result = format_tickets(self.df)
-        self.assertIn("Ticket ID: 1", result)
-        self.assertIn("Topic: Dark Mode", result)
-        self.assertIn("Message: Please add dark mode", result)
-        self.assertIn("---", result)
-
-    def test_build_prompt_default_template(self):
-        prompt = build_evidence_prompt(self.proposal, self.df)
-        self.assertIn("Feature Proposal:\nAdd dark mode support", prompt)
-        self.assertIn("Ticket ID: 1", prompt)
-        self.assertIn("Ticket ID: 2", prompt)
-
-    def test_build_prompt_file_template(self):
-        # We can use the actual template file from prompts/evidence_prompt.txt
-        template_path = os.path.join(os.path.dirname(__file__), "..", "prompts", "evidence_prompt.txt")
-        # Ensure it exists (it was created in the previous step)
-        if os.path.exists(template_path):
-            prompt = build_evidence_prompt(self.proposal, self.df, template_path=template_path)
-            self.assertIn("Feature Proposal:\nAdd dark mode support", prompt)
-            self.assertIn("Ticket ID: 1", prompt)
-        else:
-            self.skipTest("prompts/evidence_prompt.txt not found")
-
-    def test_invalid_proposal_type(self):
-        with self.assertRaises(ValueError):
-            build_evidence_prompt(123, self.df)
-
-    def test_empty_proposal(self):
-        with self.assertRaises(ValueError):
-            build_evidence_prompt("", self.df)
-        with self.assertRaises(ValueError):
-            build_evidence_prompt("   ", self.df)
-
-    def test_invalid_df_type(self):
-        with self.assertRaises(TypeError):
-            build_evidence_prompt(self.proposal, "not a dataframe")
-
-    def test_df_missing_columns(self):
-        invalid_df = pd.DataFrame({"id": [1], "msg": ["Hello"]})
-        with self.assertRaises(ValueError):
-            build_evidence_prompt(self.proposal, invalid_df)
-
-    def test_missing_file_template(self):
-        with self.assertRaises(FileNotFoundError):
-            build_evidence_prompt(self.proposal, self.df, template_path="nonexistent_template.txt")
-
-    def test_bad_template_placeholders(self):
-        # Create a temporary file with bad placeholders
-        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as tmp:
-            tmp.write("This is a bad template with {wrong_placeholder}")
-            tmp_path = tmp.name
-
-        try:
-            with self.assertRaises(KeyError):
-                build_evidence_prompt(self.proposal, self.df, template_path=tmp_path)
-        finally:
-            os.remove(tmp_path)
+    ])
 
 
-if __name__ == "__main__":
-    unittest.main()
+# --- format_tickets Unit Tests ---
+
+def test_format_tickets_empty():
+    """Verify format_tickets returns fallback message for empty DataFrames."""
+    empty_df = pd.DataFrame(columns=["ticket_id", "topic", "message"])
+    result = format_tickets(empty_df)
+    assert result == "No tickets found matching the keyword criteria."
+
+
+def test_format_tickets_valid_structure(sample_tickets_df):
+    """Verify format_tickets formats valid ticket rows with ID, topic, and message."""
+    result = format_tickets(sample_tickets_df)
+    assert "Ticket ID: 101" in result
+    assert "Topic: Dark Mode Request" in result
+    assert "Message: Please add a dark theme option." in result
+    assert "---" in result
+
+
+def test_format_tickets_preserves_order():
+    """Verify format_tickets preserves the exact order of rows from the DataFrame."""
+    ordered_df = pd.DataFrame([
+        {"ticket_id": 1, "topic": "First Ticket", "message": "Alpha"},
+        {"ticket_id": 2, "topic": "Second Ticket", "message": "Beta"},
+        {"ticket_id": 3, "topic": "Third Ticket", "message": "Gamma"},
+    ])
+    result = format_tickets(ordered_df)
+    
+    pos_first = result.find("Ticket ID: 1")
+    pos_second = result.find("Ticket ID: 2")
+    pos_third = result.find("Ticket ID: 3")
+    
+    assert pos_first != -1 and pos_second != -1 and pos_third != -1
+    assert pos_first < pos_second < pos_third
+
+
+# --- build_evidence_prompt Unit Tests ---
+
+def test_build_prompt_contains_proposal(sample_proposal, sample_tickets_df):
+    """Verify build_evidence_prompt incorporates the feature proposal into the prompt."""
+    prompt = build_evidence_prompt(sample_proposal, sample_tickets_df)
+    assert "Add dark mode support" in prompt
+
+
+def test_build_prompt_contains_ticket_info(sample_proposal, sample_tickets_df):
+    """Verify build_evidence_prompt incorporates formatted ticket information."""
+    prompt = build_evidence_prompt(sample_proposal, sample_tickets_df)
+    assert "Ticket ID: 101" in prompt
+    assert "Ticket ID: 102" in prompt
+
+
+def test_build_prompt_full_placeholder_replacement(sample_proposal, sample_tickets_df):
+    """Verify all template placeholders ({proposal}, {tickets_text}) are completely substituted."""
+    prompt = build_evidence_prompt(sample_proposal, sample_tickets_df)
+    assert "{proposal}" not in prompt
+    assert "{tickets_text}" not in prompt
+
+
+def test_build_prompt_empty_tickets_df(sample_proposal):
+    """Verify an empty ticket DataFrame produces a valid prompt containing the proposal."""
+    empty_df = pd.DataFrame(columns=["ticket_id", "topic", "message"])
+    prompt = build_evidence_prompt(sample_proposal, empty_df)
+    
+    assert "Add dark mode support" in prompt
+    assert "No tickets found matching the keyword criteria." in prompt
+    assert "{proposal}" not in prompt
+    assert "{tickets_text}" not in prompt
+
+
+def test_build_prompt_unicode_support():
+    """Verify build_evidence_prompt correctly handles Unicode characters and emojis in proposal and tickets."""
+    unicode_proposal = "Enable Mode Sombre 🌙 / Dark Theme (Español 🇪🇸 & 日本語 🇯🇵)"
+    unicode_df = pd.DataFrame([
+        {
+            "ticket_id": 999,
+            "topic": "Problème d'éclairage 💡",
+            "message": "La pantalla es demasiado brillante 🌟. Necesitamos modo oscuro!"
+        }
+    ])
+    
+    prompt = build_evidence_prompt(unicode_proposal, unicode_df)
+    assert "Enable Mode Sombre 🌙 / Dark Theme (Español 🇪🇸 & 日本語 🇯🇵)" in prompt
+    assert "Problème d'éclairage 💡" in prompt
+    assert "La pantalla es demasiado brillante 🌟. Necesitamos modo oscuro!" in prompt
+
+
+def test_build_prompt_custom_template_file(tmp_path, sample_proposal, sample_tickets_df):
+    """Verify custom template file loading using pytest's tmp_path fixture."""
+    custom_template_content = (
+        "CUSTOM ANALYSIS PROMPT\n"
+        "Target Feature: {proposal}\n"
+        "Data Source:\n{tickets_text}\n"
+        "END PROMPT"
+    )
+    template_file = tmp_path / "custom_template.txt"
+    template_file.write_text(custom_template_content, encoding="utf-8")
+
+    prompt = build_evidence_prompt(sample_proposal, sample_tickets_df, template_path=str(template_file))
+    
+    assert prompt.startswith("CUSTOM ANALYSIS PROMPT")
+    assert "Target Feature: Add dark mode support" in prompt
+    assert "Ticket ID: 101" in prompt
+    assert prompt.endswith("END PROMPT")
+
+
+# --- Error Handling & Input Validation Tests ---
+
+def test_build_prompt_invalid_proposal_type(sample_tickets_df):
+    """Verify passing non-string proposal raises ValueError."""
+    with pytest.raises(ValueError, match="proposal must be a non-empty string"):
+        build_evidence_prompt(12345, sample_tickets_df)
+
+
+def test_build_prompt_empty_proposal(sample_tickets_df):
+    """Verify passing empty or whitespace proposal raises ValueError."""
+    with pytest.raises(ValueError, match="proposal must be a non-empty string"):
+        build_evidence_prompt("", sample_tickets_df)
+    with pytest.raises(ValueError, match="proposal must be a non-empty string"):
+        build_evidence_prompt("   ", sample_tickets_df)
+
+
+def test_build_prompt_invalid_df_type(sample_proposal):
+    """Verify passing non-DataFrame raises TypeError."""
+    with pytest.raises(TypeError, match="df_tickets must be a pandas DataFrame"):
+        build_evidence_prompt(sample_proposal, "not_a_dataframe")
+
+
+def test_build_prompt_df_missing_columns(sample_proposal):
+    """Verify DataFrame missing required columns ('topic', 'message') raises ValueError."""
+    invalid_df = pd.DataFrame({"ticket_id": [1], "user_comment": ["Hello"]})
+    with pytest.raises(ValueError, match="df_tickets is missing required columns"):
+        build_evidence_prompt(sample_proposal, invalid_df)
+
+
+def test_build_prompt_missing_template_file(sample_proposal, sample_tickets_df):
+    """Verify specifying a non-existent template path raises FileNotFoundError."""
+    with pytest.raises(FileNotFoundError, match="Template file not found"):
+        build_evidence_prompt(sample_proposal, sample_tickets_df, template_path="non_existent_file.txt")
+
+
+def test_build_prompt_bad_template_placeholders(tmp_path, sample_proposal, sample_tickets_df):
+    """Verify custom template missing expected placeholders raises KeyError."""
+    bad_template = tmp_path / "bad_template.txt"
+    bad_template.write_text("Template with invalid {wrong_key} placeholder", encoding="utf-8")
+
+    with pytest.raises(KeyError, match="Template is missing required placeholder"):
+        build_evidence_prompt(sample_proposal, sample_tickets_df, template_path=str(bad_template))
