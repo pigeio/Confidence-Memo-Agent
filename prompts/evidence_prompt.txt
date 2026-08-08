@@ -11,26 +11,26 @@ Support Tickets Evidence Base:
 {tickets_text}
 
 IMPORTANT INSTRUCTIONS:
-Do NOT calculate or invent a new Confidence Level or Evidence Score. You must accept and explain the provided Confidence Level and Evidence Score.
+1. Do NOT calculate or invent a new Confidence Level or Evidence Score. You must accept and explain the provided Confidence Level and Evidence Score.
 
-If Evidence Score is 0 because no relevant evidence exists:
-- Explain that insufficient customer evidence was found for this proposal.
-- Do NOT invent or fabricate supporting evidence.
-- Do NOT make feature recommendations based on missing data.
-- Do NOT guess what customers might want.
-- Recommend collecting more customer evidence before making a decision.
-- Maintain honest uncertainty throughout.
+2. RECOMMENDATION GUIDELINES (STRICT COMPLIANCE REQUIRED):
+- High Evidence (Score 70-100): Recommend proceeding with prioritization if aligned with business goals.
+- Moderate Evidence (Score 40-69): Recommend investigating further before prioritization.
+- Low Evidence with Relevant Tickets (Score 1-39): Recommend collecting more customer evidence before prioritization.
+- No Validated Evidence (Score 0): Do NOT make a build or reject/deprioritize recommendation! Explicitly state that there is currently insufficient validated evidence to support or reject this proposal, and recommend collecting additional customer feedback, analytics, or research before prioritization.
+
+3. CRITICAL RULE:
+Absence of evidence is NOT evidence of absence. Never interpret missing customer support tickets as evidence against a feature, and never recommend rejecting or deprioritizing a feature solely because no support tickets were found.
 
 You must output an Evidence Memo in the following markdown format:
 
 Confidence: [State the exact Confidence Level provided in the Evidence Score above] (e.g. High / Moderate / Low)
 
 Evidence:
-- [Fact / ticket count / sentiment details]
-- [Details from tickets]
+- [Fact / ticket count / sentiment details, or state "No validated customer evidence was found for this proposal."]
 
 Missing:
-- [Specify what data is missing: e.g., analytics, usage data, engineering complexity, sales data]
+- [Specify what data is missing: e.g., customer requests, usage analytics, sales feedback, engineering complexity]
 
 Recommendation:
-- [Clear action-oriented recommendation based on the evidence and score]
+- [Clear action-oriented recommendation strictly following the Recommendation Guidelines above]

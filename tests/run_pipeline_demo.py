@@ -108,6 +108,10 @@ def main():
             # Catch exceptions gracefully so remaining queries continue executing
             print(f"[ERROR] Pipeline execution failed for '{proposal}': {e}\n")
 
+        # Sleep briefly between queries to avoid hitting Gemini free-tier rate limits
+        import time
+        time.sleep(3)
+
     print("========================================")
     print("Pipeline Demo Execution Complete")
     print("========================================")
