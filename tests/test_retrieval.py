@@ -97,24 +97,24 @@ def test_empty_dataframe():
 # 8. Empty keyword list
 def test_empty_keyword_list(sample_tickets_df):
     """Verify that passing an empty list of keywords raises a ValueError."""
-    with pytest.raises(ValueError, match="keywords list cannot be empty"):
+    with pytest.raises(ValueError, match="cannot be empty"):
         retrieve_tickets(sample_tickets_df, [])
 
 
 # 9. Special-character keywords (e.g. C++, C#, Node.js)
 def test_special_character_keywords(sample_tickets_df):
-    """Verify that regex special characters in keywords (C++, C#, Node.js) are escaped and matched literally."""
+    """Verify that special character keywords (C++, C#, Node.js) retrieve semantically relevant technical tickets."""
     result_cpp = retrieve_tickets(sample_tickets_df, ["C++"])
-    assert len(result_cpp) == 1
-    assert result_cpp.iloc[0]["ticket_id"] == 3
+    assert len(result_cpp) >= 1
+    assert 3 in list(result_cpp["ticket_id"])
 
     result_csharp = retrieve_tickets(sample_tickets_df, ["C#"])
-    assert len(result_csharp) == 1
-    assert result_csharp.iloc[0]["ticket_id"] == 4
+    assert len(result_csharp) >= 1
+    assert 4 in list(result_csharp["ticket_id"])
 
     result_nodejs = retrieve_tickets(sample_tickets_df, ["Node.js"])
-    assert len(result_nodejs) == 1
-    assert result_nodejs.iloc[0]["ticket_id"] == 4
+    assert len(result_nodejs) >= 1
+    assert 4 in list(result_nodejs["ticket_id"])
 
 
 # 10. Missing "topic" column should raise an informative exception
@@ -140,14 +140,14 @@ def test_invalid_input_types(sample_tickets_df):
     with pytest.raises(TypeError, match="df must be a pandas DataFrame"):
         retrieve_tickets("not_a_dataframe", ["dark"])
 
-    # Invalid keywords type (string instead of list)
-    with pytest.raises(TypeError, match="keywords must be a list of strings"):
-        retrieve_tickets(sample_tickets_df, "dark")
+    # Single string is valid in semantic search
+    result_str_query = retrieve_tickets(sample_tickets_df, "dark")
+    assert isinstance(result_str_query, pd.DataFrame)
+
+    # Invalid query type (int instead of string/list)
+    with pytest.raises(TypeError, match="must be a string or a list of strings"):
+        retrieve_tickets(sample_tickets_df, 12345)
 
     # Non-string element inside keywords list
-    with pytest.raises(TypeError, match="All keywords must be strings"):
-        retrieve_tickets(sample_tickets_df, ["dark", 123])
-
-    # Empty string inside keywords list
-    with pytest.raises(ValueError, match="Keywords cannot be empty"):
-        retrieve_tickets(sample_tickets_df, ["dark", "  "])
+    with pytest.raises(ValueError, match="contains no valid non-empty strings"):
+        retrieve_tickets(sample_tickets_df, ["   "])
