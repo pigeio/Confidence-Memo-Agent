@@ -1,5 +1,6 @@
 import pandas as pd
 from src.retrieval import retrieve_tickets
+from src.evidence_scoring import EvidenceScoringEngine
 from src.prompt_builder import build_evidence_prompt
 from src.gemini_client import GeminiClient
 
@@ -7,18 +8,26 @@ from src.gemini_client import GeminiClient
 class MemoService:
     """
     Orchestrator that coordinates the Confidence Memo generation pipeline.
-    It retrieves relevant tickets, constructs a calibrated prompt, and queries Gemini.
+    It retrieves relevant tickets, calculates a deterministic Evidence Score,
+    constructs an analyst prompt, and queries Gemini.
     """
 
-    def __init__(self, gemini_client: GeminiClient = None):
+    def __init__(
+        self,
+        gemini_client: GeminiClient = None,
+        scoring_engine: EvidenceScoringEngine = None,
+    ):
         """
         Initialize the MemoService.
 
         Parameters:
             gemini_client (GeminiClient): An instance of GeminiClient. If not provided,
                                          it will initialize a default client.
+            scoring_engine (EvidenceScoringEngine): An instance of EvidenceScoringEngine.
+                                                   If not provided, initializes default engine.
         """
         self.gemini_client = gemini_client or GeminiClient()
+        self.scoring_engine = scoring_engine or EvidenceScoringEngine()
 
     def generate_evidence_memo(
         self,
@@ -28,8 +37,8 @@ class MemoService:
         template_path: str = None,
     ) -> str:
         """
-        Generate an Evidence Memo for a given feature proposal by querying Gemini
-        with support tickets matched by the given keywords.
+        Generate an Evidence Memo for a given feature proposal by retrieving tickets,
+        calculating deterministic evidence scores, building the prompt, and querying Gemini.
 
         Parameters:
             df (pd.DataFrame): Support tickets DataFrame.
@@ -47,12 +56,18 @@ class MemoService:
         # 1. Retrieve matching tickets (validates df and keywords internally)
         matching_tickets = retrieve_tickets(df, keywords)
 
-        # 2. Build the prompt (validates proposal and df columns internally)
+        # 2. Calculate deterministic Evidence Score and Confidence Level
+        scoring_info = self.scoring_engine.calculate_score(matching_tickets)
+
+        # 3. Build the prompt including the pre-calculated scoring summary
         prompt = build_evidence_prompt(
-            proposal, matching_tickets, template_path=template_path
+            proposal,
+            matching_tickets,
+            scoring_info=scoring_info,
+            template_path=template_path,
         )
 
-        # 3. Generate response using the Gemini client
+        # 4. Generate response using the Gemini client
         memo = self.gemini_client.generate_response(prompt)
 
         return memo

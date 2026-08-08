@@ -2,17 +2,23 @@ import os
 import pandas as pd
 
 DEFAULT_TEMPLATE = """You are an honest, calibrated evidence analyst.
-Your job is to evaluate customer support data to determine whether it supports a proposed feature or change.
+Your job is to evaluate customer support data and explain the pre-calculated Evidence Score for a proposed feature or change.
 
 Feature Proposal:
 {proposal}
 
+Deterministically Calculated Evidence Score:
+{scoring_summary}
+
 Support Tickets Evidence Base:
 {tickets_text}
 
-Analyze the tickets against the proposal. You must output an Evidence Memo in the following markdown format:
+IMPORTANT INSTRUCTIONS:
+Do NOT calculate or invent a new Confidence Level or Evidence Score. You must accept and explain the provided Confidence Level and Evidence Score.
 
-Confidence: [Low / Moderate / High] (Be highly calibrated: only select High if the evidence is clear, consistent, and represents a significant portion of tickets; Moderate if there is some signal but lacks breadth or is mixed; Low if there is very little or no signal).
+You must output an Evidence Memo in the following markdown format:
+
+Confidence: [State the exact Confidence Level provided in the Evidence Score above] (e.g. High / Moderate / Low)
 
 Evidence:
 - [Fact / ticket count / sentiment details]
@@ -22,7 +28,7 @@ Missing:
 - [Specify what data is missing: e.g., analytics, usage data, engineering complexity, sales data]
 
 Recommendation:
-- [Clear action-oriented recommendation based on the evidence]
+- [Clear action-oriented recommendation based on the evidence and score]
 """
 
 
@@ -44,14 +50,47 @@ def format_tickets(df: pd.DataFrame) -> str:
     return "\n".join(formatted_list)
 
 
-def build_evidence_prompt(proposal: str, df_tickets: pd.DataFrame, template_path: str = None) -> str:
+def format_scoring_summary(scoring_info: dict = None) -> str:
+    """
+    Format scoring_info dictionary into a readable summary string.
+    """
+    if not scoring_info or not isinstance(scoring_info, dict):
+        return "Confidence Level: Not Provided | Evidence Score: N/A"
+
+    confidence = scoring_info.get("confidence", "N/A")
+    score = scoring_info.get("score", "N/A")
+    factors = scoring_info.get("factors", {})
+
+    summary_lines = [
+        f"Confidence Level: {confidence}",
+        f"Evidence Score: {score} / 100",
+    ]
+
+    if factors:
+        summary_lines.append("Factor Breakdown:")
+        summary_lines.append(f"- Ticket Volume: {factors.get('ticket_volume', 0)} / 30 pts")
+        summary_lines.append(f"- Severity & Urgency: {factors.get('severity', 0)} / 20 pts")
+        summary_lines.append(f"- Sentiment Consistency: {factors.get('sentiment_consistency', 0)} / 25 pts")
+        summary_lines.append(f"- Recency: {factors.get('recency', 0)} / 15 pts")
+        summary_lines.append(f"- User Diversity: {factors.get('diversity', 0)} / 10 pts")
+
+    return "\n".join(summary_lines)
+
+
+def build_evidence_prompt(
+    proposal: str,
+    df_tickets: pd.DataFrame,
+    scoring_info: dict = None,
+    template_path: str = None,
+) -> str:
     """
     Construct the analysis prompt for Gemini by loading the prompt template
-    and substituting the feature proposal and formatted support tickets.
+    and substituting the feature proposal, scoring summary, and formatted support tickets.
 
     Parameters:
         proposal (str): The proposed feature description.
         df_tickets (pd.DataFrame): The DataFrame of support tickets.
+        scoring_info (dict): Optional scoring information dictionary from EvidenceScoringEngine.
         template_path (str): Optional path to load the prompt template from a file.
 
     Returns:
@@ -61,7 +100,7 @@ def build_evidence_prompt(proposal: str, df_tickets: pd.DataFrame, template_path
         TypeError: If df_tickets is not a pandas DataFrame.
         ValueError: If proposal is empty, or df_tickets is missing required columns.
         FileNotFoundError: If template_path is provided but file does not exist.
-        KeyError: If template is missing {proposal} or {tickets_text} placeholders.
+        KeyError: If template is missing required placeholders.
     """
     # Validate inputs
     if not isinstance(proposal, str) or not proposal.strip():
@@ -76,8 +115,9 @@ def build_evidence_prompt(proposal: str, df_tickets: pd.DataFrame, template_path
         if missing_cols:
             raise ValueError(f"df_tickets is missing required columns: {missing_cols}")
 
-    # Format the tickets to string representation
+    # Format the tickets and scoring summary to string representations
     tickets_text = format_tickets(df_tickets)
+    scoring_summary = format_scoring_summary(scoring_info)
 
     # Load template
     template = DEFAULT_TEMPLATE
@@ -89,7 +129,15 @@ def build_evidence_prompt(proposal: str, df_tickets: pd.DataFrame, template_path
 
     # Format template
     try:
-        prompt = template.format(proposal=proposal, tickets_text=tickets_text)
+        # Support both new template (with scoring_summary) and legacy templates (without scoring_summary)
+        if "{scoring_summary}" in template:
+            prompt = template.format(
+                proposal=proposal,
+                scoring_summary=scoring_summary,
+                tickets_text=tickets_text,
+            )
+        else:
+            prompt = template.format(proposal=proposal, tickets_text=tickets_text)
     except KeyError as e:
         raise KeyError(f"Template is missing required placeholder: {e}")
 

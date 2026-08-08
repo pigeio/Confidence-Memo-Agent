@@ -1,15 +1,21 @@
 You are an honest, calibrated evidence analyst.
-Your job is to evaluate customer support data to determine whether it supports a proposed feature or change.
+Your job is to evaluate customer support data and explain the pre-calculated Evidence Score for a proposed feature or change.
 
 Feature Proposal:
 {proposal}
 
+Deterministically Calculated Evidence Score:
+{scoring_summary}
+
 Support Tickets Evidence Base:
 {tickets_text}
 
-Analyze the tickets against the proposal. You must output an Evidence Memo in the following markdown format:
+IMPORTANT INSTRUCTIONS:
+Do NOT calculate or invent a new Confidence Level or Evidence Score. You must accept and explain the provided Confidence Level and Evidence Score.
 
-Confidence: [Low / Moderate / High] (Be highly calibrated: only select High if the evidence is clear, consistent, and represents a significant portion of tickets; Moderate if there is some signal but lacks breadth or is mixed; Low if there is very little or no signal).
+You must output an Evidence Memo in the following markdown format:
+
+Confidence: [State the exact Confidence Level provided in the Evidence Score above] (e.g. High / Moderate / Low)
 
 Evidence:
 - [Fact / ticket count / sentiment details]
@@ -19,4 +25,4 @@ Missing:
 - [Specify what data is missing: e.g., analytics, usage data, engineering complexity, sales data]
 
 Recommendation:
-- [Clear action-oriented recommendation based on the evidence]
+- [Clear action-oriented recommendation based on the evidence and score]

@@ -58,9 +58,11 @@ def test_arguments_passed_from_retrieval_to_prompt_builder(
     service.generate_evidence_memo(df_input, keywords, proposal, template_path="custom.txt")
 
     mock_retrieve_tickets.assert_called_once_with(df_input, keywords)
-    mock_build_prompt.assert_called_once_with(
-        proposal, retrieved_subset_df, template_path="custom.txt"
-    )
+    assert mock_build_prompt.call_count == 1
+    args, kwargs = mock_build_prompt.call_args
+    assert args == (proposal, retrieved_subset_df)
+    assert kwargs["template_path"] == "custom.txt"
+    assert "scoring_info" in kwargs
 
 
 # 3. Correct prompt passed to Gemini
@@ -71,6 +73,7 @@ def test_correct_prompt_passed_to_gemini(
 ):
     """Verify that the exact prompt output by build_evidence_prompt is sent to Gemini."""
     df, keywords, proposal = sample_inputs
+    mock_retrieve_tickets.return_value = df
     expected_prompt = "EXPECTED ANALYST PROMPT CONTENT"
     mock_build_prompt.return_value = expected_prompt
 
@@ -97,7 +100,12 @@ def test_empty_retrieval_results_produce_memo(
     memo = service.generate_evidence_memo(df, keywords, proposal)
 
     assert memo == "Memo with Low Confidence"
-    mock_build_prompt.assert_called_once_with(proposal, empty_retrieved_df, template_path=None)
+    assert mock_build_prompt.call_count == 1
+    args, kwargs = mock_build_prompt.call_args
+    assert args == (proposal, empty_retrieved_df)
+    assert kwargs["template_path"] is None
+    assert kwargs["scoring_info"]["score"] == 0
+    assert kwargs["scoring_info"]["confidence"] == "Low"
     mock_gemini_client.generate_response.assert_called_once_with("Prompt for empty evidence base")
 
 
