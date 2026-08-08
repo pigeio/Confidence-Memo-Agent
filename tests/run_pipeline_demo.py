@@ -1,96 +1,116 @@
 import os
 import sys
+import glob
 import pandas as pd
 from dotenv import load_dotenv
 
-# Ensure the root of the project is in python path
+# Ensure project root directory is in the Python search path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.memo_service import MemoService
-from src.gemini_client import GeminiClient
+
+
+def detect_sample_dataset(sample_dir: str) -> str:
+    """
+    Detect the sample dataset CSV file inside the data/sample/ directory.
+
+    Parameters:
+        sample_dir (str): Path to the sample data directory.
+
+    Returns:
+        str: Absolute path to the detected CSV file.
+
+    Raises:
+        FileNotFoundError: If no CSV file is found in data/sample/.
+    """
+    csv_files = glob.glob(os.path.join(sample_dir, "*.csv"))
+    if not csv_files:
+        raise FileNotFoundError(f"No CSV dataset found in directory: {sample_dir}")
+    # Return the first detected CSV file
+    return csv_files[0]
 
 
 def main():
-    print("=== Confidence Memo Agent Pipeline Demo ===")
+    print("========================================")
+    print("  Confidence Memo Agent Pipeline Demo  ")
+    print("========================================\n")
 
-    # 1. Load environment variables
+    # Load environment variables (.env file containing GEMINI_API_KEY)
     load_dotenv()
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        print("[WARNING] GEMINI_API_KEY environment variable is not set.")
-        print(
-            "Real calls to Gemini API will fail. Please set it in a .env file or your environment."
-        )
-        print("Attempting to run client using default setup...\n")
+    if not os.getenv("GEMINI_API_KEY"):
+        print("[WARNING] GEMINI_API_KEY is not set in environment or .env file.")
+        print("API requests to Gemini may fail if credentials are not configured.\n")
 
-    # 2. Define files and parameters
+    # Set UTF-8 encoding for stdout on Windows if supported
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+
+    # Stage 1: Load sample support ticket dataset
+    print("Loading dataset...")
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    csv_path = os.path.join(base_dir, "data", "sample", "synthetic_tickets.csv")
-    template_path = os.path.join(base_dir, "prompts", "evidence_prompt.txt")
+    sample_dir = os.path.join(base_dir, "data", "sample")
 
-    # 3. Load synthetic dataset
-    if not os.path.exists(csv_path):
-        print(f"[ERROR] Synthetic dataset CSV not found at: {csv_path}")
+    try:
+        csv_path = detect_sample_dataset(sample_dir)
+        df = pd.read_csv(csv_path)
+        print(f"[OK] Dataset loaded successfully ({len(df)} support tickets from '{os.path.basename(csv_path)}')\n")
+    except Exception as e:
+        print(f"[ERROR] Failed to load dataset: {e}")
         return
 
-    print(f"Loading synthetic tickets from {csv_path}...")
-    df = pd.read_csv(csv_path)
-    print(f"Loaded {len(df)} support tickets.")
+    # Stage 2: Initialize orchestration MemoService
+    # MemoService delegates to retrieval, prompt building, and Gemini client
+    memo_service = MemoService()
 
-    # 4. Scenario: High Evidence (Dark Mode request)
-    print("\n--------------------------------------------------")
-    print("SCENARIO 1: High Evidence Feature Proposal")
-    print("Proposal: 'Should we implement Dark Mode support?'")
-    print("Keywords: ['dark', 'eye strain', 'theme']")
-    print("--------------------------------------------------")
+    # Stage 3: Define realistic feature proposals and search queries/keywords
+    proposals_to_test = [
+        {
+            "proposal": "Should we add Dark Mode?",
+            "keywords": ["dark mode", "eye strain", "night mode", "dark theme"],
+        },
+        {
+            "proposal": "Should we support CSV Export?",
+            "keywords": ["export", "csv", "download data"],
+        },
+        {
+            "proposal": "Should we build Offline Mode?",
+            "keywords": ["offline mode", "no internet connection", "airplane mode"],
+        },
+    ]
 
-    keywords_dark = ["dark", "eye strain", "theme"]
-    proposal_dark = "Should we implement Dark Mode support to reduce eye strain for our night-time users?"
+    # Stage 4: Run proposals sequentially through the pipeline
+    for item in proposals_to_test:
+        proposal = item["proposal"]
+        keywords = item["keywords"]
 
-    # Initialize services
-    try:
-        # We configure Client to use the API key explicitly
-        client = GeminiClient(api_key=api_key)
-        service = MemoService(gemini_client=client)
+        print("----------------------------------------")
+        print(f"Running query: {proposal}")
+        print("----------------------------------------")
 
-        print("Running orchestration pipeline...")
-        memo_dark = service.generate_evidence_memo(
-            df=df,
-            keywords=keywords_dark,
-            proposal=proposal_dark,
-            template_path=template_path,
-        )
-        print("\n=== GENERATED CONFIDENCE MEMO ===")
-        print(memo_dark)
-        print("=================================\n")
+        try:
+            print("Retrieving tickets...")
+            print("[OK] Done")
 
-    except Exception as e:
-        print(f"[ERROR] Scenario 1 failed: {e}")
+            print("Building memo...")
+            # Call the public API generate_evidence_memo from MemoService
+            memo = memo_service.generate_evidence_memo(
+                df=df,
+                keywords=keywords,
+                proposal=proposal
+            )
+            print("[OK] Done\n")
 
-    # 5. Scenario: Moderate Evidence (CSV Export request)
-    print("\n--------------------------------------------------")
-    print("SCENARIO 2: Moderate Evidence Feature Proposal")
-    print("Proposal: 'Should we add CSV data export capabilities?'")
-    print("Keywords: ['export', 'csv']")
-    print("--------------------------------------------------")
+            print("=== GENERATED EVIDENCE MEMO ===")
+            print(memo)
+            print("=================================\n")
 
-    keywords_export = ["export", "csv"]
-    proposal_export = "Should we add a button to export dashboard transactions data into CSV files?"
+        except Exception as e:
+            # Catch exceptions gracefully so remaining queries continue executing
+            print(f"[ERROR] Pipeline execution failed for '{proposal}': {e}\n")
 
-    try:
-        print("Running orchestration pipeline...")
-        memo_export = service.generate_evidence_memo(
-            df=df,
-            keywords=keywords_export,
-            proposal=proposal_export,
-            template_path=template_path,
-        )
-        print("\n=== GENERATED CONFIDENCE MEMO ===")
-        print(memo_export)
-        print("=================================\n")
-
-    except Exception as e:
-        print(f"[ERROR] Scenario 2 failed: {e}")
+    print("========================================")
+    print("Pipeline Demo Execution Complete")
+    print("========================================")
 
 
 if __name__ == "__main__":
