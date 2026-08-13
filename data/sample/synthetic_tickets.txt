@@ -1,0 +1,20 @@
+Dark mode support: The screen is too bright at night. Can we get dark mode? It hurts my eyes.
+Eye strain: I get severe eye strain when working late hours in the app. A dark theme would help.
+Export data: Is there a way to export my dashboard data to CSV? I need it for weekly reports.
+App crash: The app crashes every time I try to upload a large profile image.
+Dark Mode?: Please add dark mode. Every other app has it and it's essential for night developers.
+Billing question: I was billed twice this month. Please refund the extra charge.
+Feature Request: CSV Export: We really need a CSV export feature for our transactions list.
+Dark theme request: I would love to see a dark mode option. The white background is blinding.
+Login failure: I am unable to log in with my Google account. It shows an authentication error.
+Text size adjust: Can we adjust the font size in the app? The current font is too small to read.
+Eye strain under fluorescent lights: The interface needs a dark mode or a night mode. The glare causes eye strain after an hour of use.
+Notification delay: I am receiving push notifications 10 minutes late on my Android device.
+Search button missing: After the last update, the search button is hidden on mobile view.
+Integrate with Slack: Do you plan to add a Slack integration? We want to receive updates in our channels.
+Exporting transactions: Can we get a download CSV button for transaction history?
+Password reset link: The password reset link I received has expired. Please send a new one.
+Dark mode interface: Any plans for dark mode? My eyes are burning after staring at the screen for 8 hours.
+Language support: When will you add Spanish translation to the dashboard?
+API Access: Do you provide API keys for developers? I want to automate my report retrieval.
+Page load speed: The dashboard loads very slowly, sometimes taking up to 10 seconds.

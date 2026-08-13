@@ -24,21 +24,35 @@ This document tracks completed phases and future engineering sprints for the Con
 
 ---
 
+### ✅ Sprint 3: Universal File Ingestion, Connectors & Validation
+- Modular universal file parsers (CSV, Excel, JSON, TXT, PDF).
+- External API connectors (Google Sheets, Zendesk, Notion, Intercom).
+- Deterministic 5-factor Evidence Scoring Engine and similarity validation filtering.
+
+### ✅ Sprint 3.6: Advanced Evidence Intelligence
+- Exact and dense semantic evidence deduplication with configurable thresholds.
+- Hierarchical semantic evidence clustering and medoid theme extraction.
+- Historical calibration logging and statistical Brier / ECE calibration metrics.
+- Deterministic multi-criteria Decision Engine generating Priority Scores and recommendations.
+- End-to-end Decision Memo generation pipeline.
+
+### ✅ Sprint 4: Real-World Dataset Validation & Benchmarking
+- Dataset Adapter Layer for Google Play, GitHub Issues, Customer Support, and Amazon Reviews.
+- Multi-scale performance benchmarking (1K to 50K records) proving sub-40ms NumPy retrieval without FAISS overhead.
+- Rigorous quality evaluation (Precision@5: 0.467, Recall@5: 0.944, MRR: 1.000, MAP: 1.000).
+- Empirical threshold optimization for evidence similarity, deduplication, and clustering distance.
+- Robustness edge-case test suite covering multilingual, emojis, missing fields, and extreme message lengths.
+- 212+ automated tests passing with 100% deterministic reliability.
+
+---
+
 ## 🔮 Future Sprints
 
-### ⬜ Sprint 3: Evidence Scoring Engine
-- Quantitative Evidence Score (0–100 scale).
-- Analytical breakdown based on ticket volume, sentiment consistency, urgency, recency, and user diversity.
+### ⬜ Sprint 5: Interactive Visual Dashboard (Streamlit UI)
+- Interactive web app for product managers to query features, view visual Evidence Memos, inspect ticket clusters, and adjust decision matrices in real-time.
 
-### ⬜ Sprint 4: Decision Memo Engine
-- Secondary deep-dive analysis module for prioritised features.
-- Evaluates technical effort, compute impact, memory/battery footprint, engineering risks, pros/cons, and final trade-off recommendations.
+### ⬜ Sprint 6: Multilingual Dense Retrieval
+- Upgrading embeddings to multilingual sentence transformers (`paraphrase-multilingual-MiniLM-L12-v2`) for global user feedback.
 
-### ⬜ Sprint 5: Historical Calibration & Accuracy
-- Historical tracking of feature outcomes vs. past AI confidence recommendations to calibrate scoring accuracy over time.
-
-### ⬜ Sprint 6: Streamlit Web UI
-- Interactive web app for product managers to query features, view visual Evidence Memos, inspect ticket quotes, and request Decision Memos.
-
-### ⬜ Sprint 7: Multi-Source Integrations
-- Connectors for Jira, Slack, Linear, Zendesk, NPS surveys, and session replays to enrich the evidence base.
+### ⬜ Sprint 7: Enterprise Webhook & Streaming Ingestion
+- Real-time event streaming connectors for Jira, Slack, Linear, and live Zendesk webhook feeds.

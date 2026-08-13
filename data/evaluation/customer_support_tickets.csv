@@ -1,0 +1,9 @@
+ticket_id,author_id,created_at,text,category,priority
+cs_301,user_881,2026-01-05 10:14:22,Cannot log in to my account with SSO Google OAuth. Gives 403 authorization error!,Authentication,Urgent
+cs_302,user_882,2026-01-05 11:30:15,Login is broken after password reset. The reset link returns 404 Expired Token.,Authentication,High
+cs_303,user_883,2026-01-06 09:00:44,Two-factor authentication SMS code is never sent to UK phone numbers.,Authentication,High
+cs_304,user_884,2026-01-08 14:15:30,Keep getting logged out every 5 minutes while working in the dashboard.,Authentication,Medium
+cs_305,user_885,2026-01-10 16:45:12,How do I invite team members to our workspace?,User Management,Low
+cs_306,user_886,2026-01-12 13:20:00,Need urgent fix for SAML login loop redirecting to login page continuously.,Authentication,Urgent
+cs_307,user_887,2026-01-15 08:35:19,Billing invoice for January shows incorrect seat count.,Billing,Medium
+cs_308,user_888,2026-01-18 19:10:00,Magic link login emails are getting flagged as spam by Outlook.,Authentication,Medium

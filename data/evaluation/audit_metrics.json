@@ -1,0 +1,857 @@
+{
+  "audit_timestamp_utc": "2026-08-13T20:48:27Z",
+  "retrieval_audit": {
+    "total_queries": 25,
+    "evaluated_positive_queries": 22,
+    "negative_control_queries": 3,
+    "macro_precision_at_5": 0.2636,
+    "macro_recall_at_5": 0.9924,
+    "mean_reciprocal_rank": 1.0,
+    "mean_average_precision": 1.0,
+    "negative_control_audit": [
+      {
+        "query_id": "Q_GP_06_NEG",
+        "query": "cryptocurrency bitcoin payment integration in app",
+        "dataset": "google_play_reviews",
+        "top_similarity_score": 0.2572,
+        "false_positives_above_evidence_threshold": 0,
+        "properly_rejected": true
+      },
+      {
+        "query_id": "Q_GH_08_NEG",
+        "query": "iOS Swift compilation linker error architecture arm64",
+        "dataset": "github_issues",
+        "top_similarity_score": 0.0,
+        "false_positives_above_evidence_threshold": 0,
+        "properly_rejected": true
+      },
+      {
+        "query_id": "Q_AMZ_04_NEG",
+        "query": "waterproof IP68 water submersion resistance rating",
+        "dataset": "amazon_product_reviews",
+        "top_similarity_score": 0.0,
+        "false_positives_above_evidence_threshold": 0,
+        "properly_rejected": true
+      }
+    ],
+    "per_query_breakdowns": [
+      {
+        "query_id": "Q_GP_01",
+        "dataset": "google_play_reviews",
+        "query": "eye strain reading at night dark background",
+        "query_type": "natural_language",
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.833,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 5,
+        "relevant_retrieved": 5,
+        "total_relevant": 6
+      },
+      {
+        "query_id": "Q_GP_02",
+        "dataset": "google_play_reviews",
+        "query": "special character playlist search failure",
+        "query_type": "keyword",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 1,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_GP_03",
+        "dataset": "google_play_reviews",
+        "query": "application freeze force close on Android OS settings",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 5,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_GP_04",
+        "dataset": "google_play_reviews",
+        "query": "listen to tracks without internet connection",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 1,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_GP_05",
+        "dataset": "google_play_reviews",
+        "query": "audio streaming power consumption drain",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 2,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_GH_01",
+        "dataset": "github_issues",
+        "query": "search query latency and timeout on big repositories",
+        "query_type": "natural_language",
+        "precision_at_5": 0.4,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 5,
+        "relevant_retrieved": 2,
+        "total_relevant": 2
+      },
+      {
+        "query_id": "Q_GH_02",
+        "dataset": "github_issues",
+        "query": "boolean filter parsing drops author and tag criteria",
+        "query_type": "keyword",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 2,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_GH_03",
+        "dataset": "github_issues",
+        "query": "approximate string matching returns unrelated results",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 5,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_GH_04",
+        "dataset": "github_issues",
+        "query": "regular expression pattern search in code bar",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 3,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_GH_05",
+        "dataset": "github_issues",
+        "query": "daemon memory accumulation and socket leak",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 2,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_GH_06",
+        "dataset": "github_issues",
+        "query": "access token refresh failure in background auth",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 1,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_GH_07",
+        "dataset": "github_issues",
+        "query": "quick command palette hotkey keyboard shortcut",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 1,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_CS_01",
+        "dataset": "customer_support_tickets",
+        "query": "single sign on Google workspace 403 access denied",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 5,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_CS_02",
+        "dataset": "customer_support_tickets",
+        "query": "credential recovery URL expiration 404 error",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 5,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_CS_03",
+        "dataset": "customer_support_tickets",
+        "query": "2FA multi-factor authentication SMS delivery failure",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 5,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_CS_04",
+        "dataset": "customer_support_tickets",
+        "query": "unexpected session logout while navigating portal",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 5,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_CS_05",
+        "dataset": "customer_support_tickets",
+        "query": "infinite redirect loop on enterprise identity provider SAML",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 5,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_CS_06",
+        "dataset": "customer_support_tickets",
+        "query": "subscription billing seat count invoice discrepancies",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 1,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_CS_07",
+        "dataset": "customer_support_tickets",
+        "query": "passwordless email link delivered to junk folder",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 4,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_AMZ_01",
+        "dataset": "amazon_product_reviews",
+        "query": "standby idle power depletion overnight",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 4,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_AMZ_02",
+        "dataset": "amazon_product_reviews",
+        "query": "high temperature thermal risk when fast charging",
+        "query_type": "natural_language",
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 2,
+        "relevant_retrieved": 1,
+        "total_relevant": 1
+      },
+      {
+        "query_id": "Q_AMZ_03",
+        "dataset": "amazon_product_reviews",
+        "query": "overall short battery runtime compared to manufacturer specs",
+        "query_type": "natural_language",
+        "precision_at_5": 0.6,
+        "recall_at_5": 1.0,
+        "mrr": 1.0,
+        "map": 1.0,
+        "retrieved_count": 5,
+        "relevant_retrieved": 3,
+        "total_relevant": 3
+      }
+    ]
+  },
+  "deduplication_audit": [
+    {
+      "dataset_name": "google_play_reviews",
+      "similarity_threshold": 0.85,
+      "confusion_matrix": {
+        "true_positives": 4,
+        "false_positives": 0,
+        "false_negatives": 6,
+        "true_negatives": 5,
+        "total_annotated_pairs": 15
+      },
+      "metrics": {
+        "precision": 1.0,
+        "recall": 0.4,
+        "specificity": 1.0,
+        "f1_score": 0.5714,
+        "accuracy": 0.6
+      },
+      "error_analysis": {
+        "total_errors": 6,
+        "false_positives_count": 0,
+        "false_negatives_count": 6,
+        "cause_distribution": {
+          "embedding_confusion": 3,
+          "threshold_too_high": 3
+        },
+        "error_details": [
+          {
+            "ticket_a": "gp_1002",
+            "ticket_b": "gp_1003",
+            "message_a": "Please add dark mode! The bright white background causes severe eye strain at night.",
+            "message_b": "Dark theme is an absolute must have. All other apps have night mode now.",
+            "predicted_duplicate": false,
+            "ground_truth_duplicate": true,
+            "error_type": "FALSE_NEGATIVE",
+            "similarity_score": 0.8258,
+            "classified_cause": "threshold_too_high",
+            "justification": "Both request dark mode / night theme."
+          },
+          {
+            "ticket_a": "gp_1002",
+            "ticket_b": "gp_1004",
+            "message_a": "Please add dark mode! The bright white background causes severe eye strain at night.",
+            "message_b": "Need dark mode support urgently. The white background hurts my eyes.",
+            "predicted_duplicate": false,
+            "ground_truth_duplicate": true,
+            "error_type": "FALSE_NEGATIVE",
+            "similarity_score": 0.9205,
+            "classified_cause": "embedding_confusion",
+            "justification": "Both report white background causes eye strain and request dark mode."
+          },
+          {
+            "ticket_a": "gp_1002",
+            "ticket_b": "gp_1010",
+            "message_a": "Please add dark mode! The bright white background causes severe eye strain at night.",
+            "message_b": "The white screen is blinding at night. We really need dark mode.",
+            "predicted_duplicate": false,
+            "ground_truth_duplicate": true,
+            "error_type": "FALSE_NEGATIVE",
+            "similarity_score": 0.8922,
+            "classified_cause": "embedding_confusion",
+            "justification": "Both report white screen eye strain at night."
+          },
+          {
+            "ticket_a": "gp_1003",
+            "ticket_b": "gp_1004",
+            "message_a": "Dark theme is an absolute must have. All other apps have night mode now.",
+            "message_b": "Need dark mode support urgently. The white background hurts my eyes.",
+            "predicted_duplicate": false,
+            "ground_truth_duplicate": true,
+            "error_type": "FALSE_NEGATIVE",
+            "similarity_score": 0.8276,
+            "classified_cause": "threshold_too_high",
+            "justification": "Both state dark theme/night mode is urgently needed."
+          },
+          {
+            "ticket_a": "gp_1003",
+            "ticket_b": "gp_1010",
+            "message_a": "Dark theme is an absolute must have. All other apps have night mode now.",
+            "message_b": "The white screen is blinding at night. We really need dark mode.",
+            "predicted_duplicate": false,
+            "ground_truth_duplicate": true,
+            "error_type": "FALSE_NEGATIVE",
+            "similarity_score": 0.847,
+            "classified_cause": "threshold_too_high",
+            "justification": "Both request dark mode/theme."
+          },
+          {
+            "ticket_a": "gp_1004",
+            "ticket_b": "gp_1010",
+            "message_a": "Need dark mode support urgently. The white background hurts my eyes.",
+            "message_b": "The white screen is blinding at night. We really need dark mode.",
+            "predicted_duplicate": false,
+            "ground_truth_duplicate": true,
+            "error_type": "FALSE_NEGATIVE",
+            "similarity_score": 0.892,
+            "classified_cause": "embedding_confusion",
+            "justification": "Both report white background hurts eyes/blinding at night."
+          }
+        ]
+      },
+      "correct_predictions": {
+        "true_positives_count": 4,
+        "true_negatives_count": 5
+      }
+    },
+    {
+      "dataset_name": "customer_support_tickets",
+      "similarity_threshold": 0.85,
+      "confusion_matrix": {
+        "true_positives": 0,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "true_negatives": 4,
+        "total_annotated_pairs": 4
+      },
+      "metrics": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "specificity": 1.0,
+        "f1_score": 1.0,
+        "accuracy": 1.0
+      },
+      "error_analysis": {
+        "total_errors": 0,
+        "false_positives_count": 0,
+        "false_negatives_count": 0,
+        "cause_distribution": {},
+        "error_details": []
+      },
+      "correct_predictions": {
+        "true_positives_count": 0,
+        "true_negatives_count": 4
+      }
+    },
+    {
+      "dataset_name": "amazon_product_reviews",
+      "similarity_threshold": 0.85,
+      "confusion_matrix": {
+        "true_positives": 0,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "true_negatives": 3,
+        "total_annotated_pairs": 3
+      },
+      "metrics": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "specificity": 1.0,
+        "f1_score": 1.0,
+        "accuracy": 1.0
+      },
+      "error_analysis": {
+        "total_errors": 0,
+        "false_positives_count": 0,
+        "false_negatives_count": 0,
+        "cause_distribution": {},
+        "error_details": []
+      },
+      "correct_predictions": {
+        "true_positives_count": 0,
+        "true_negatives_count": 3
+      }
+    }
+  ],
+  "candidate_benchmarks": [
+    {
+      "candidate_name": "Baseline (Embedding Cosine >= 0.85)",
+      "true_positives": 7,
+      "false_positives": 0,
+      "false_negatives": 3,
+      "true_negatives": 5,
+      "precision": 1.0,
+      "recall": 0.7,
+      "f1_score": 0.8235
+    },
+    {
+      "candidate_name": "Cosine >= 0.85 + Jaccard >= 0.20",
+      "true_positives": 5,
+      "false_positives": 0,
+      "false_negatives": 5,
+      "true_negatives": 5,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1_score": 0.6667
+    },
+    {
+      "candidate_name": "Cosine >= 0.85 + Jaccard >= 0.30",
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 9,
+      "true_negatives": 5,
+      "precision": 1.0,
+      "recall": 0.1,
+      "f1_score": 0.1818
+    },
+    {
+      "candidate_name": "Cosine >= 0.85 + 3-gram >= 0.25",
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 9,
+      "true_negatives": 5,
+      "precision": 1.0,
+      "recall": 0.1,
+      "f1_score": 0.1818
+    },
+    {
+      "candidate_name": "Cosine >= 0.80 + Jaccard >= 0.30",
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 9,
+      "true_negatives": 5,
+      "precision": 1.0,
+      "recall": 0.1,
+      "f1_score": 0.1818
+    },
+    {
+      "candidate_name": "Cosine >= 0.85 + Exact Topic Match",
+      "true_positives": 3,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "true_negatives": 5,
+      "precision": 1.0,
+      "recall": 0.3,
+      "f1_score": 0.4615
+    }
+  ],
+  "embedding_audit": {
+    "batch_sizes": [
+      {
+        "batch_size": 16,
+        "sample_size": 500,
+        "elapsed_seconds": 6.3929,
+        "throughput_texts_per_sec": 78.2,
+        "peak_memory_mb": 0.96,
+        "avg_ms_per_text": 12.79
+      },
+      {
+        "batch_size": 32,
+        "sample_size": 500,
+        "elapsed_seconds": 5.4961,
+        "throughput_texts_per_sec": 91.0,
+        "peak_memory_mb": 0.96,
+        "avg_ms_per_text": 10.99
+      },
+      {
+        "batch_size": 64,
+        "sample_size": 500,
+        "elapsed_seconds": 4.56,
+        "throughput_texts_per_sec": 109.7,
+        "peak_memory_mb": 0.97,
+        "avg_ms_per_text": 9.12
+      },
+      {
+        "batch_size": 128,
+        "sample_size": 500,
+        "elapsed_seconds": 2.698,
+        "throughput_texts_per_sec": 185.3,
+        "peak_memory_mb": 0.99,
+        "avg_ms_per_text": 5.4
+      },
+      {
+        "batch_size": 256,
+        "sample_size": 500,
+        "elapsed_seconds": 2.5219,
+        "throughput_texts_per_sec": 198.3,
+        "peak_memory_mb": 1.03,
+        "avg_ms_per_text": 5.04
+      }
+    ],
+    "determinism": {
+      "is_deterministic": true,
+      "max_absolute_difference": 0.0,
+      "all_l2_unit_normalized": true,
+      "norm_violation_count": 0,
+      "min_norm": 1.0,
+      "max_norm": 1.0
+    },
+    "caching": {
+      "sample_size": 200,
+      "cold_start_seconds": 1.4887,
+      "cached_lookup_seconds": 0.003744,
+      "speedup_factor": 397.6,
+      "cache_hit_verified": true,
+      "cache_entries_count": 1
+    }
+  },
+  "model_comparison": [
+    {
+      "model_name": "all-MiniLM-L6-v2",
+      "hf_id": "all-MiniLM-L6-v2",
+      "status": "EVALUATED",
+      "dimension": 384,
+      "parameters_m": 22.7,
+      "disk_size_mb": 90,
+      "load_time_sec": 7.26,
+      "throughput_texts_per_sec": 533.0,
+      "precision_at_5": 0.2636,
+      "recall_at_5": 0.9924,
+      "mrr": 1.0,
+      "map": 1.0,
+      "recommendation": "OPTIMAL",
+      "notes": "Current production default. Lightweight, fast CPU inference."
+    },
+    {
+      "model_name": "bge-small-en-v1.5",
+      "hf_id": "BAAI/bge-small-en-v1.5",
+      "status": "EVALUATED",
+      "dimension": 384,
+      "parameters_m": 33.4,
+      "disk_size_mb": 133,
+      "load_time_sec": 46.72,
+      "throughput_texts_per_sec": 131.8,
+      "precision_at_5": 0.2636,
+      "recall_at_5": 0.9924,
+      "mrr": 0.9773,
+      "map": 0.9773,
+      "recommendation": "VIABLE_ALTERNATIVE",
+      "notes": "High MTEB rank for retrieval benchmarks."
+    },
+    {
+      "model_name": "e5-small-v2",
+      "hf_id": "intfloat/e5-small-v2",
+      "status": "EVALUATED",
+      "dimension": 384,
+      "parameters_m": 33.4,
+      "disk_size_mb": 133,
+      "load_time_sec": 46.65,
+      "throughput_texts_per_sec": 113.4,
+      "precision_at_5": 0.2636,
+      "recall_at_5": 0.9924,
+      "mrr": 0.9659,
+      "map": 0.9659,
+      "recommendation": "VIABLE_ALTERNATIVE",
+      "notes": "Trained on massive text pair corpus with passage/query prefixing."
+    }
+  ],
+  "threshold_optimization": {
+    "evidence_threshold_sweep": [
+      {
+        "threshold": 0.4,
+        "precision": 0.9242,
+        "recall": 0.9167,
+        "f1_score": 0.8747,
+        "f1_95ci": [
+          0.7602,
+          0.969
+        ],
+        "average_retention_rate": 0.4685,
+        "queries_evaluated": 22
+      },
+      {
+        "threshold": 0.5,
+        "precision": 1.0,
+        "recall": 0.8258,
+        "f1_score": 0.8312,
+        "f1_95ci": [
+          0.6623,
+          0.9549
+        ],
+        "average_retention_rate": 0.3857,
+        "queries_evaluated": 22
+      },
+      {
+        "threshold": 0.6,
+        "precision": 1.0,
+        "recall": 0.5682,
+        "f1_score": 0.5758,
+        "f1_95ci": [
+          0.3636,
+          0.7727
+        ],
+        "average_retention_rate": 0.2773,
+        "queries_evaluated": 22
+      },
+      {
+        "threshold": 0.65,
+        "precision": 1.0,
+        "recall": 0.3409,
+        "f1_score": 0.3485,
+        "f1_95ci": [
+          0.1667,
+          0.5455
+        ],
+        "average_retention_rate": 0.2076,
+        "queries_evaluated": 22
+      },
+      {
+        "threshold": 0.7,
+        "precision": 1.0,
+        "recall": 0.1591,
+        "f1_score": 0.1667,
+        "f1_95ci": [
+          0.0455,
+          0.3337
+        ],
+        "average_retention_rate": 0.1076,
+        "queries_evaluated": 22
+      },
+      {
+        "threshold": 0.75,
+        "precision": 1.0,
+        "recall": 0.0682,
+        "f1_score": 0.0758,
+        "f1_95ci": [
+          0.0,
+          0.197
+        ],
+        "average_retention_rate": 0.0545,
+        "queries_evaluated": 22
+      },
+      {
+        "threshold": 0.8,
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "f1_95ci": [
+          0.0,
+          0.0
+        ],
+        "average_retention_rate": 0.0,
+        "queries_evaluated": 22
+      }
+    ],
+    "deduplication_threshold_sweep": [
+      {
+        "threshold": 0.7,
+        "precision": 1.0,
+        "recall": 0.4,
+        "f1_score": 0.5714,
+        "true_positives": 4,
+        "false_positives": 0,
+        "false_negatives": 6,
+        "true_negatives": 12
+      },
+      {
+        "threshold": 0.75,
+        "precision": 1.0,
+        "recall": 0.4,
+        "f1_score": 0.5714,
+        "true_positives": 4,
+        "false_positives": 0,
+        "false_negatives": 6,
+        "true_negatives": 12
+      },
+      {
+        "threshold": 0.8,
+        "precision": 1.0,
+        "recall": 0.4,
+        "f1_score": 0.5714,
+        "true_positives": 4,
+        "false_positives": 0,
+        "false_negatives": 6,
+        "true_negatives": 12
+      },
+      {
+        "threshold": 0.85,
+        "precision": 1.0,
+        "recall": 0.4,
+        "f1_score": 0.5714,
+        "true_positives": 4,
+        "false_positives": 0,
+        "false_negatives": 6,
+        "true_negatives": 12
+      },
+      {
+        "threshold": 0.9,
+        "precision": 1.0,
+        "recall": 0.1,
+        "f1_score": 0.1818,
+        "true_positives": 1,
+        "false_positives": 0,
+        "false_negatives": 9,
+        "true_negatives": 12
+      },
+      {
+        "threshold": 0.95,
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "true_positives": 0,
+        "false_positives": 0,
+        "false_negatives": 10,
+        "true_negatives": 12
+      }
+    ],
+    "clustering_threshold_sweep": [
+      {
+        "distance_threshold": 0.2,
+        "total_clusters": 5,
+        "average_cluster_size": 2.0,
+        "silhouette_score": 0.4118,
+        "intra_cluster_coherence": 0.9712
+      },
+      {
+        "distance_threshold": 0.25,
+        "total_clusters": 5,
+        "average_cluster_size": 2.0,
+        "silhouette_score": 0.4118,
+        "intra_cluster_coherence": 0.9712
+      },
+      {
+        "distance_threshold": 0.3,
+        "total_clusters": 5,
+        "average_cluster_size": 2.0,
+        "silhouette_score": 0.4118,
+        "intra_cluster_coherence": 0.9712
+      },
+      {
+        "distance_threshold": 0.35,
+        "total_clusters": 5,
+        "average_cluster_size": 2.0,
+        "silhouette_score": 0.4118,
+        "intra_cluster_coherence": 0.9712
+      },
+      {
+        "distance_threshold": 0.4,
+        "total_clusters": 4,
+        "average_cluster_size": 2.5,
+        "silhouette_score": 0.4581,
+        "intra_cluster_coherence": 0.8676
+      },
+      {
+        "distance_threshold": 0.5,
+        "total_clusters": 2,
+        "average_cluster_size": 5.0,
+        "silhouette_score": 0.3639,
+        "intra_cluster_coherence": 0.6176
+      }
+    ]
+  }
+}

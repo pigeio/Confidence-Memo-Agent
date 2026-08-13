@@ -1,0 +1,66 @@
+[
+  {
+    "number": 201,
+    "title": "Search queries fail on large repositories (>50k files)",
+    "body": "When executing full-text search across large workspaces, the search engine times out after 30 seconds with 504 Gateway Timeout. We need indexing optimizations and debounced query execution.",
+    "created_at": "2026-01-10T10:00:00Z",
+    "labels": ["bug", "search", "performance"],
+    "state": "open"
+  },
+  {
+    "number": 202,
+    "title": "Search filters (by tag and author) do not return matching tickets",
+    "body": "Filtering by author:alex or tag:frontend returns empty results even when tickets exist. The elastic query parser appears to drop boolean filters.",
+    "created_at": "2026-01-12T14:20:00Z",
+    "labels": ["bug", "search"],
+    "state": "open"
+  },
+  {
+    "number": 203,
+    "title": "Fuzzy search matching produces high false positive rates",
+    "body": "Typing 'login' matches unrelated tickets like 'logging'. We should adjust edit distance threshold or use dense embedding cosine ranking.",
+    "created_at": "2026-01-15T09:45:00Z",
+    "labels": ["enhancement", "search"],
+    "state": "open"
+  },
+  {
+    "number": 204,
+    "title": "Feature Request: Regex support in global search",
+    "body": "Power users require regex matching capability in the search input bar to match pattern-based error codes.",
+    "created_at": "2026-01-18T16:10:00Z",
+    "labels": ["feature", "search"],
+    "state": "open"
+  },
+  {
+    "number": 205,
+    "title": "Search latency spikes during concurrent peak usage",
+    "body": "P99 search latency jumps from 150ms to 4200ms when more than 100 concurrent queries hit the retrieval endpoint.",
+    "created_at": "2026-01-22T11:30:00Z",
+    "labels": ["performance", "search"],
+    "state": "open"
+  },
+  {
+    "number": 206,
+    "title": "Memory leak in WebSocket notification daemon",
+    "body": "Background process RSS memory grows by 200MB/hour due to unclosed socket connections.",
+    "created_at": "2026-01-25T08:15:00Z",
+    "labels": ["bug", "backend"],
+    "state": "open"
+  },
+  {
+    "number": 207,
+    "title": "OAuth token expiration causes silent sync failures",
+    "body": "When Google OAuth access token expires after 1 hour, background refresh token flow fails without prompting user to re-authenticate.",
+    "created_at": "2026-01-28T13:00:00Z",
+    "labels": ["auth", "bug"],
+    "state": "open"
+  },
+  {
+    "number": 208,
+    "title": "Add keyboard shortcuts for search navigation (Cmd+K / Ctrl+K)",
+    "body": "Implementing a universal command palette shortcut would significantly boost navigation speed for engineers.",
+    "created_at": "2026-02-02T17:40:00Z",
+    "labels": ["enhancement", "search", "ui"],
+    "state": "open"
+  }
+]

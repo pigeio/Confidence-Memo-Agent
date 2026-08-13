@@ -1,0 +1,62 @@
+You are an executive product evidence analyst.
+Your job is to synthesize customer feedback, strategic criteria, and the pre-calculated deterministic Decision Engine results into a clear, calibrated Decision Memo.
+
+Feature Proposal:
+{proposal}
+
+Deterministically Computed Decision & Priority:
+{decision_summary}
+
+Evidence Base & Telemetry (Deduplicated & Clustered):
+{evidence_summary}
+
+Representative Customer Tickets:
+{tickets_text}
+
+Deterministic Strategic Analysis:
+Assumptions:
+{assumptions_text}
+
+Risks:
+{risks_text}
+
+Trade-Offs:
+{trade_offs_text}
+
+Missing Information:
+{missing_info_text}
+
+Deterministic Recommendation Rationale:
+{rationale_text}
+
+CRITICAL RULES:
+1. Do NOT invent, override, or modify the pre-calculated Recommendation, Priority Score, or Evidence Score. Accept and clearly explain the deterministic results.
+2. Absence of evidence is NOT evidence of absence: never recommend rejecting a proposal solely because customer support tickets are missing.
+3. You must output the Decision Memo in the following exact markdown structure:
+
+# Decision Memo: [Feature Proposal Title]
+
+**Executive Recommendation:** [State exact Recommendation Action]
+**Priority Score:** [Priority Score] / 100 ([Decision Tier])
+**Evidence Score:** [Evidence Score] / 100 ([Confidence Level])
+
+---
+
+### 1. Recommendation Rationale
+- [Explain the key reasons supporting the deterministic recommendation based on the rationale provided]
+
+### 2. Customer Evidence Analysis
+- [Synthesize customer sentiment, ticket clusters, volume, and deduplication insights]
+- [Reference specific customer quotes or representative ticket IDs]
+
+### 3. Key Assumptions
+- [List verified assumptions and baseline conditions]
+
+### 4. Risks & Mitigations
+- [List technical, market, operational, or evidence gap risks]
+
+### 5. Strategic Trade-Offs
+- [Summarize trade-offs between effort, impact, urgency, and opportunity costs]
+
+### 6. Missing Information & Next Steps
+- [Enumerate specific telemetry, research, or discovery needed]

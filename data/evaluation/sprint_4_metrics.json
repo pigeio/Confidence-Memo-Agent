@@ -1,0 +1,293 @@
+{
+  "benchmarks": [
+    {
+      "dataset_size": 1000,
+      "total_runtime_sec": 6.2612,
+      "peak_memory_mb": 4.59,
+      "throughput_records_per_sec": 159.7,
+      "embedding_time_sec": 6.0831,
+      "retrieval_time_sec": 0.0223,
+      "validation_time_sec": 0.0005,
+      "deduplication_time_sec": 0.1452,
+      "clustering_time_sec": 0.0054,
+      "decision_engine_time_sec": 0.0046
+    },
+    {
+      "dataset_size": 5000,
+      "total_runtime_sec": 31.0639,
+      "peak_memory_mb": 22.73,
+      "throughput_records_per_sec": 161.0,
+      "embedding_time_sec": 30.5892,
+      "retrieval_time_sec": 0.0234,
+      "validation_time_sec": 0.0015,
+      "deduplication_time_sec": 0.2217,
+      "clustering_time_sec": 0.2235,
+      "decision_engine_time_sec": 0.0045
+    },
+    {
+      "dataset_size": 10000,
+      "total_runtime_sec": 64.3057,
+      "peak_memory_mb": 44.7,
+      "throughput_records_per_sec": 155.5,
+      "embedding_time_sec": 63.9899,
+      "retrieval_time_sec": 0.0191,
+      "validation_time_sec": 0.0006,
+      "deduplication_time_sec": 0.1415,
+      "clustering_time_sec": 0.1457,
+      "decision_engine_time_sec": 0.0089
+    },
+    {
+      "dataset_size": 25000,
+      "total_runtime_sec": 160.64,
+      "peak_memory_mb": 110.62,
+      "throughput_records_per_sec": 155.6,
+      "embedding_time_sec": 160.3025,
+      "retrieval_time_sec": 0.0342,
+      "validation_time_sec": 0.001,
+      "deduplication_time_sec": 0.169,
+      "clustering_time_sec": 0.1284,
+      "decision_engine_time_sec": 0.005
+    },
+    {
+      "dataset_size": 50000,
+      "total_runtime_sec": 357.7916,
+      "peak_memory_mb": 220.48,
+      "throughput_records_per_sec": 139.7,
+      "embedding_time_sec": 357.4044,
+      "retrieval_time_sec": 0.04,
+      "validation_time_sec": 0.0008,
+      "deduplication_time_sec": 0.1544,
+      "clustering_time_sec": 0.1846,
+      "decision_engine_time_sec": 0.0074
+    }
+  ],
+  "retrieval_quality": {
+    "precision_at_k": 0.4667,
+    "recall_at_k": 0.9444,
+    "mrr": 1.0,
+    "map": 1.0,
+    "query_count": 3,
+    "query_breakdowns": [
+      {
+        "query": "dark mode night theme",
+        "retrieved_count": 5,
+        "relevant_in_top_k": 5,
+        "total_relevant": 6,
+        "precision_at_k": 1.0,
+        "recall_at_k": 0.833,
+        "reciprocal_rank": 1.0,
+        "average_precision": 1.0
+      },
+      {
+        "query": "search broken playlist",
+        "retrieved_count": 2,
+        "relevant_in_top_k": 1,
+        "total_relevant": 1,
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "average_precision": 1.0
+      },
+      {
+        "query": "app crashes settings",
+        "retrieved_count": 5,
+        "relevant_in_top_k": 1,
+        "total_relevant": 1,
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "average_precision": 1.0
+      }
+    ]
+  },
+  "deduplication_quality": {
+    "precision": 0.5,
+    "recall": 0.6667,
+    "f1_score": 0.5714,
+    "true_positives": 2,
+    "false_positives": 2,
+    "false_negatives": 1,
+    "detected_pairs_count": 4,
+    "ground_truth_pairs_count": 3,
+    "deduplication_stats": {
+      "total_input_count": 10,
+      "unique_count": 6,
+      "duplicate_count": 4,
+      "duplicate_rate": 0.4,
+      "exact_duplicates_count": 0,
+      "semantic_duplicates_count": 4,
+      "duplicate_groups": [
+        {
+          "representative_index": 0,
+          "representative_ticket_id": "gp_1001",
+          "duplicate_indices": [
+            1,
+            2,
+            3,
+            9
+          ],
+          "duplicate_ticket_ids": [
+            "gp_1002",
+            "gp_1003",
+            "gp_1004",
+            "gp_1010"
+          ],
+          "group_size": 5,
+          "has_exact": false,
+          "has_semantic": true
+        }
+      ]
+    }
+  },
+  "evidence_threshold_sweep": [
+    {
+      "threshold": 0.4,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "average_retention_rate": 0.4857
+    },
+    {
+      "threshold": 0.5,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "average_retention_rate": 0.4857
+    },
+    {
+      "threshold": 0.6,
+      "precision": 1.0,
+      "recall": 0.8333,
+      "f1_score": 0.9091,
+      "average_retention_rate": 0.3429
+    },
+    {
+      "threshold": 0.65,
+      "precision": 1.0,
+      "recall": 0.7778,
+      "f1_score": 0.875,
+      "average_retention_rate": 0.2952
+    },
+    {
+      "threshold": 0.7,
+      "precision": 1.0,
+      "recall": 0.0556,
+      "f1_score": 0.1053,
+      "average_retention_rate": 0.0476
+    },
+    {
+      "threshold": 0.75,
+      "precision": 1.0,
+      "recall": 0.0556,
+      "f1_score": 0.1053,
+      "average_retention_rate": 0.0476
+    },
+    {
+      "threshold": 0.8,
+      "precision": 1.0,
+      "recall": 0.0,
+      "f1_score": 0.0,
+      "average_retention_rate": 0.0
+    }
+  ],
+  "deduplication_threshold_sweep": [
+    {
+      "threshold": 0.7,
+      "precision": 0.4,
+      "recall": 0.6667,
+      "f1_score": 0.5,
+      "duplicates_detected": 5,
+      "false_positives": 3,
+      "false_negatives": 1
+    },
+    {
+      "threshold": 0.75,
+      "precision": 0.4,
+      "recall": 0.6667,
+      "f1_score": 0.5,
+      "duplicates_detected": 5,
+      "false_positives": 3,
+      "false_negatives": 1
+    },
+    {
+      "threshold": 0.8,
+      "precision": 0.4,
+      "recall": 0.6667,
+      "f1_score": 0.5,
+      "duplicates_detected": 5,
+      "false_positives": 3,
+      "false_negatives": 1
+    },
+    {
+      "threshold": 0.85,
+      "precision": 0.5,
+      "recall": 0.6667,
+      "f1_score": 0.5714,
+      "duplicates_detected": 4,
+      "false_positives": 2,
+      "false_negatives": 1
+    },
+    {
+      "threshold": 0.9,
+      "precision": 1.0,
+      "recall": 0.3333,
+      "f1_score": 0.5,
+      "duplicates_detected": 1,
+      "false_positives": 0,
+      "false_negatives": 2
+    },
+    {
+      "threshold": 0.95,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0.0,
+      "duplicates_detected": 0,
+      "false_positives": 0,
+      "false_negatives": 3
+    }
+  ],
+  "clustering_threshold_sweep": [
+    {
+      "distance_threshold": 0.2,
+      "total_clusters": 5,
+      "average_cluster_size": 2.0,
+      "silhouette_score": 0.4118,
+      "intra_cluster_coherence": 0.9712
+    },
+    {
+      "distance_threshold": 0.25,
+      "total_clusters": 5,
+      "average_cluster_size": 2.0,
+      "silhouette_score": 0.4118,
+      "intra_cluster_coherence": 0.9712
+    },
+    {
+      "distance_threshold": 0.3,
+      "total_clusters": 5,
+      "average_cluster_size": 2.0,
+      "silhouette_score": 0.4118,
+      "intra_cluster_coherence": 0.9712
+    },
+    {
+      "distance_threshold": 0.35,
+      "total_clusters": 5,
+      "average_cluster_size": 2.0,
+      "silhouette_score": 0.4118,
+      "intra_cluster_coherence": 0.9712
+    },
+    {
+      "distance_threshold": 0.4,
+      "total_clusters": 4,
+      "average_cluster_size": 2.5,
+      "silhouette_score": 0.4581,
+      "intra_cluster_coherence": 0.8676
+    },
+    {
+      "distance_threshold": 0.5,
+      "total_clusters": 2,
+      "average_cluster_size": 5.0,
+      "silhouette_score": 0.3639,
+      "intra_cluster_coherence": 0.6176
+    }
+  ]
+}

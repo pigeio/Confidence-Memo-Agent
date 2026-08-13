@@ -61,7 +61,45 @@ def test_format_tickets_preserves_order():
     assert pos_first < pos_second < pos_third
 
 
+# --- format_scoring_summary Unit Tests ---
+
+def test_format_scoring_summary_with_telemetry():
+    """Verify format_scoring_summary includes telemetry stats (validated, retrieved, rejected, avg similarity)."""
+    from src.prompt_builder import format_scoring_summary
+
+    scoring_info = {
+        "score": 75,
+        "confidence": "High",
+        "evidence_summary": {
+            "validated_tickets": 5,
+            "retrieved_tickets": 8,
+            "rejected_tickets": 3,
+            "average_similarity": 0.81,
+            "sample_size": "Medium",
+        },
+        "factors": {
+            "ticket_volume": 30.0,
+            "severity": 16.0,
+            "sentiment_consistency": 25.0,
+            "recency": 15.0,
+            "diversity": 10.0,
+        },
+    }
+
+    result = format_scoring_summary(scoring_info)
+    assert "Confidence Level: High" in result
+    assert "Evidence Score: 75 / 100" in result
+    assert "Evidence Telemetry:" in result
+    assert "Validated Tickets: 5" in result
+    assert "Retrieved Candidates: 8" in result
+    assert "Rejected Candidates: 3" in result
+    assert "Average Similarity: 0.81" in result
+    assert "Sample Size Tier: Medium" in result
+    assert "Factor Breakdown:" in result
+
+
 # --- build_evidence_prompt Unit Tests ---
+
 
 def test_build_prompt_contains_proposal(sample_proposal, sample_tickets_df):
     """Verify build_evidence_prompt incorporates the feature proposal into the prompt."""
@@ -172,3 +210,51 @@ def test_build_prompt_bad_template_placeholders(tmp_path, sample_proposal, sampl
 
     with pytest.raises(KeyError, match="Template is missing required placeholder"):
         build_evidence_prompt(sample_proposal, sample_tickets_df, template_path=str(bad_template))
+
+
+# --- build_decision_prompt Unit Tests ---
+
+def test_build_decision_prompt_structure(sample_proposal, sample_tickets_df):
+    from src.prompt_builder import build_decision_prompt
+
+    decision_info = {
+        "recommendation": "PROCEED_TO_BUILD",
+        "priority_score": 85,
+        "decision_tier": "Top Priority",
+        "evidence_score": 80,
+        "assumptions": ["Assumes engineering capacity available."],
+        "risks": ["Low execution risk."],
+        "trade_offs": ["High ROI vs moderate effort."],
+        "missing_information": ["None."],
+        "rationale": ["Solid customer evidence and high priority score."],
+    }
+    scoring_info = {"score": 80, "confidence": "High"}
+    dedup_stats = {
+        "total_input_count": 5,
+        "unique_count": 3,
+        "duplicate_count": 2,
+        "duplicate_rate": 0.4,
+        "exact_duplicates_count": 1,
+        "semantic_duplicates_count": 1,
+    }
+    clustering_stats = {
+        "total_clusters": 2,
+        "average_cluster_size": 1.5,
+        "clusters": [{"cluster_id": 0, "size": 2, "theme_label": "Theme A"}],
+    }
+
+    prompt = build_decision_prompt(
+        proposal=sample_proposal,
+        df_tickets=sample_tickets_df,
+        decision_info=decision_info,
+        scoring_info=scoring_info,
+        deduplication_stats=dedup_stats,
+        clustering_stats=clustering_stats,
+    )
+
+    assert "Decision Memo" in prompt
+    assert "PROCEED_TO_BUILD" in prompt
+    assert "Priority Score: 85 / 100" in prompt
+    assert "Deduplication Telemetry:" in prompt
+    assert "Clustering & Theme Analysis:" in prompt
+    assert "Assumes engineering capacity available." in prompt

@@ -1,0 +1,124 @@
+{
+  "tickets": [
+    {
+      "ticket_id": 1,
+      "topic": "Dark mode support",
+      "message": "The screen is too bright at night. Can we get dark mode? It hurts my eyes.",
+      "created_at": "2026-08-01 09:00:00"
+    },
+    {
+      "ticket_id": 2,
+      "topic": "Eye strain",
+      "message": "I get severe eye strain when working late hours in the app. A dark theme would help.",
+      "created_at": "2026-08-01 10:30:00"
+    },
+    {
+      "ticket_id": 3,
+      "topic": "Export data",
+      "message": "Is there a way to export my dashboard data to CSV? I need it for weekly reports.",
+      "created_at": "2026-08-01 11:15:00"
+    },
+    {
+      "ticket_id": 4,
+      "topic": "App crash",
+      "message": "The app crashes every time I try to upload a large profile image.",
+      "created_at": "2026-08-02 08:45:00"
+    },
+    {
+      "ticket_id": 5,
+      "topic": "Dark Mode?",
+      "message": "Please add dark mode. Every other app has it and it's essential for night developers.",
+      "created_at": "2026-08-02 14:20:00"
+    },
+    {
+      "ticket_id": 6,
+      "topic": "Billing question",
+      "message": "I was billed twice this month. Please refund the extra charge.",
+      "created_at": "2026-08-02 16:00:00"
+    },
+    {
+      "ticket_id": 7,
+      "topic": "Feature Request: CSV Export",
+      "message": "We really need a CSV export feature for our transactions list.",
+      "created_at": "2026-08-03 09:30:00"
+    },
+    {
+      "ticket_id": 8,
+      "topic": "Dark theme request",
+      "message": "I would love to see a dark mode option. The white background is blinding.",
+      "created_at": "2026-08-03 11:00:00"
+    },
+    {
+      "ticket_id": 9,
+      "topic": "Login failure",
+      "message": "I am unable to log in with my Google account. It shows an authentication error.",
+      "created_at": "2026-08-03 15:45:00"
+    },
+    {
+      "ticket_id": 10,
+      "topic": "Text size adjust",
+      "message": "Can we adjust the font size in the app? The current font is too small to read.",
+      "created_at": "2026-08-04 10:00:00"
+    },
+    {
+      "ticket_id": 11,
+      "topic": "Eye strain under fluorescent lights",
+      "message": "The interface needs a dark mode or a night mode. The glare causes eye strain after an hour of use.",
+      "created_at": "2026-08-04 13:10:00"
+    },
+    {
+      "ticket_id": 12,
+      "topic": "Notification delay",
+      "message": "I am receiving push notifications 10 minutes late on my Android device.",
+      "created_at": "2026-08-04 16:50:00"
+    },
+    {
+      "ticket_id": 13,
+      "topic": "Search button missing",
+      "message": "After the last update, the search button is hidden on mobile view.",
+      "created_at": "2026-08-05 09:15:00"
+    },
+    {
+      "ticket_id": 14,
+      "topic": "Integrate with Slack",
+      "message": "Do you plan to add a Slack integration? We want to receive updates in our channels.",
+      "created_at": "2026-08-05 11:30:00"
+    },
+    {
+      "ticket_id": 15,
+      "topic": "Exporting transactions",
+      "message": "Can we get a download CSV button for transaction history?",
+      "created_at": "2026-08-05 14:40:00"
+    },
+    {
+      "ticket_id": 16,
+      "topic": "Password reset link",
+      "message": "The password reset link I received has expired. Please send a new one.",
+      "created_at": "2026-08-06 08:30:00"
+    },
+    {
+      "ticket_id": 17,
+      "topic": "Dark mode interface",
+      "message": "Any plans for dark mode? My eyes are burning after staring at the screen for 8 hours.",
+      "created_at": "2026-08-06 12:00:00"
+    },
+    {
+      "ticket_id": 18,
+      "topic": "Language support",
+      "message": "When will you add Spanish translation to the dashboard?",
+      "created_at": "2026-08-06 15:00:00"
+    },
+    {
+      "ticket_id": 19,
+      "topic": "API Access",
+      "message": "Do you provide API keys for developers? I want to automate my report retrieval.",
+      "created_at": "2026-08-07 10:15:00"
+    },
+    {
+      "ticket_id": 20,
+      "topic": "Page load speed",
+      "message": "The dashboard loads very slowly, sometimes taking up to 10 seconds.",
+      "created_at": "2026-08-07 14:30:00"
+    }
+  ]
+}

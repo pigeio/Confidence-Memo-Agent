@@ -46,15 +46,16 @@ def test_empty_dataframe(engine):
     assert result["factors"]["sentiment_consistency"] == 0.0
 
 
-# 2. Single ticket evaluation
+# 2. Single ticket evaluation (capped at Low confidence / max 39)
 def test_single_ticket(engine, single_ticket_df):
-    """Verify scoring logic for a single ticket dataset."""
+    """Verify scoring logic and small dataset cap (max 39) for a single ticket dataset."""
     result = engine.calculate_score(single_ticket_df)
 
     assert isinstance(result["score"], int)
-    assert 0 <= result["score"] <= 100
-    assert result["confidence"] in ["Low", "Moderate", "High"]
+    assert 0 <= result["score"] <= 39
+    assert result["confidence"] == "Low"
     assert result["factors"]["ticket_volume"] == 6.0
+    assert result["evidence_summary"]["sample_size"] == "Small"
 
 
 # 3. Multiple tickets evaluation (High Evidence)
@@ -89,24 +90,35 @@ def test_invalid_input_type_raises_error(engine):
         engine.calculate_score([1, 2, 3])
 
 
-# 6. Factor breakdown structure
+# 6. Factor breakdown & evidence_summary structure
 def test_factor_breakdown_structure(engine, single_ticket_df):
-    """Verify that all required factor keys exist in the returned dictionary."""
+    """Verify that all required factor keys and evidence_summary exist in the returned dictionary."""
     result = engine.calculate_score(single_ticket_df)
 
     assert "score" in result
     assert "confidence" in result
     assert "factors" in result
+    assert "evidence_summary" in result
+
+    summary = result["evidence_summary"]
+    expected_summary_keys = {
+        "validated_tickets",
+        "retrieved_tickets",
+        "rejected_tickets",
+        "average_similarity",
+        "sample_size",
+    }
+    assert set(summary.keys()) == expected_summary_keys
 
     factors = result["factors"]
-    expected_keys = {
+    expected_factor_keys = {
         "ticket_volume",
         "severity",
         "sentiment_consistency",
         "recency",
         "diversity",
     }
-    assert set(factors.keys()) == expected_keys
+    assert set(factors.keys()) == expected_factor_keys
 
 
 # 7. Deterministic output
@@ -137,3 +149,46 @@ def test_score_bounding_limits(engine):
     result = engine.calculate_score(large_df)
     assert result["score"] == 100
     assert result["confidence"] == "High"
+
+
+# 9. Small dataset score caps (1 ticket <= 39, 2 tickets <= 69)
+def test_small_dataset_score_caps(engine):
+    """Verify that 1 ticket is capped at 39 (Low) and 2 tickets are capped at 69 (Moderate)."""
+    # 1 urgent ticket with max severity/recency
+    df1 = pd.DataFrame([
+        {"ticket_id": 1, "topic": "Crash", "message": "Urgent severe crash hurting eyes!", "created_at": "2026-08-01"}
+    ])
+    res1 = engine.calculate_score(df1)
+    assert res1["score"] <= 39
+    assert res1["confidence"] == "Low"
+
+    # 2 urgent tickets
+    df2 = pd.DataFrame([
+        {"ticket_id": 1, "topic": "Crash 1", "message": "Urgent severe crash hurting eyes!", "created_at": "2026-08-01"},
+        {"ticket_id": 2, "topic": "Crash 2", "message": "Urgent severe crash burning eyes!", "created_at": "2026-08-02"}
+    ])
+    res2 = engine.calculate_score(df2)
+    assert res2["score"] <= 69
+    assert res2["confidence"] in ["Low", "Moderate"]
+
+
+# 10. Similarity score weighting
+def test_similarity_score_weighting(engine):
+    """Verify that higher similarity scores increase weighted factor scores."""
+    df = pd.DataFrame([
+        {"ticket_id": 1, "topic": "Dark Mode", "message": "Urgent dark mode feature needed.", "created_at": "2026-08-01"},
+        {"ticket_id": 2, "topic": "Eye Strain", "message": "Urgent eye strain fix needed.", "created_at": "2026-08-02"},
+        {"ticket_id": 3, "topic": "Dark Theme", "message": "Urgent dark theme fix needed.", "created_at": "2026-08-03"}
+    ])
+
+    import numpy as np
+    high_sims = np.array([0.95, 0.92, 0.98], dtype=np.float32)
+    low_sims = np.array([0.61, 0.60, 0.62], dtype=np.float32)
+
+    res_high = engine.calculate_score(df, similarity_scores=high_sims)
+    res_low = engine.calculate_score(df, similarity_scores=low_sims)
+
+    assert res_high["score"] > res_low["score"]
+    assert res_high["factors"]["ticket_volume"] > res_low["factors"]["ticket_volume"]
+    assert res_high["evidence_summary"]["average_similarity"] > res_low["evidence_summary"]["average_similarity"]
+

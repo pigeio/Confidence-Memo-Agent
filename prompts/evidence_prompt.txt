@@ -22,9 +22,9 @@ IMPORTANT INSTRUCTIONS:
 3. CRITICAL RULE:
 Absence of evidence is NOT evidence of absence. Never interpret missing customer support tickets as evidence against a feature, and never recommend rejecting or deprioritizing a feature solely because no support tickets were found.
 
-You must output an Evidence Memo in the following markdown format:
+You must output an Evidence Memo in the following exact markdown structure (do NOT change section order or headings):
 
-Confidence: [State the exact Confidence Level provided in the Evidence Score above] (e.g. High / Moderate / Low)
+Confidence: [State exact Confidence Level] (Score: [State exact Evidence Score] / 100)
 
 Evidence:
 - [Fact / ticket count / sentiment details, or state "No validated customer evidence was found for this proposal."]
@@ -34,3 +34,4 @@ Missing:
 
 Recommendation:
 - [Clear action-oriented recommendation strictly following the Recommendation Guidelines above]
+

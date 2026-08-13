@@ -1,0 +1,172 @@
+{
+  "version": "1.0",
+  "description": "Comprehensive, human-annotated duplicate pair ground truth across evaluation datasets. Includes true duplicate pairs (exact and semantic paraphrase) and true distinct pairs (negative pairs) to enable full confusion matrix computation.",
+  "datasets": {
+    "google_play_reviews": {
+      "pairs": [
+        {
+          "ticket_a": "gp_1001",
+          "ticket_b": "gp_1002",
+          "is_duplicate": true,
+          "duplicate_type": "semantic_paraphrase",
+          "justification": "Both report eye strain from bright screen in dark rooms and request dark mode theme."
+        },
+        {
+          "ticket_a": "gp_1001",
+          "ticket_b": "gp_1003",
+          "is_duplicate": true,
+          "duplicate_type": "semantic_paraphrase",
+          "justification": "Both request dark theme / night mode feature."
+        },
+        {
+          "ticket_a": "gp_1001",
+          "ticket_b": "gp_1004",
+          "is_duplicate": true,
+          "duplicate_type": "semantic_paraphrase",
+          "justification": "Both request dark mode to prevent eye pain from white background."
+        },
+        {
+          "ticket_a": "gp_1001",
+          "ticket_b": "gp_1010",
+          "is_duplicate": true,
+          "duplicate_type": "semantic_paraphrase",
+          "justification": "Both complain about blinding white background at night and request dark mode."
+        },
+        {
+          "ticket_a": "gp_1002",
+          "ticket_b": "gp_1003",
+          "is_duplicate": true,
+          "duplicate_type": "semantic_paraphrase",
+          "justification": "Both request dark mode / night theme."
+        },
+        {
+          "ticket_a": "gp_1002",
+          "ticket_b": "gp_1004",
+          "is_duplicate": true,
+          "duplicate_type": "semantic_paraphrase",
+          "justification": "Both report white background causes eye strain and request dark mode."
+        },
+        {
+          "ticket_a": "gp_1002",
+          "ticket_b": "gp_1010",
+          "is_duplicate": true,
+          "duplicate_type": "semantic_paraphrase",
+          "justification": "Both report white screen eye strain at night."
+        },
+        {
+          "ticket_a": "gp_1003",
+          "ticket_b": "gp_1004",
+          "is_duplicate": true,
+          "duplicate_type": "semantic_paraphrase",
+          "justification": "Both state dark theme/night mode is urgently needed."
+        },
+        {
+          "ticket_a": "gp_1003",
+          "ticket_b": "gp_1010",
+          "is_duplicate": true,
+          "duplicate_type": "semantic_paraphrase",
+          "justification": "Both request dark mode/theme."
+        },
+        {
+          "ticket_a": "gp_1004",
+          "ticket_b": "gp_1010",
+          "is_duplicate": true,
+          "duplicate_type": "semantic_paraphrase",
+          "justification": "Both report white background hurts eyes/blinding at night."
+        },
+        {
+          "ticket_a": "gp_1001",
+          "ticket_b": "gp_1005",
+          "is_duplicate": false,
+          "duplicate_type": "distinct_feature",
+          "justification": "Dark mode request vs. search playlist failure."
+        },
+        {
+          "ticket_a": "gp_1001",
+          "ticket_b": "gp_1007",
+          "is_duplicate": false,
+          "duplicate_type": "distinct_feature",
+          "justification": "Dark mode request vs. Android settings crash."
+        },
+        {
+          "ticket_a": "gp_1001",
+          "ticket_b": "gp_1008",
+          "is_duplicate": false,
+          "duplicate_type": "distinct_feature",
+          "justification": "Dark mode request vs. battery drain during playback."
+        },
+        {
+          "ticket_a": "gp_1005",
+          "ticket_b": "gp_1006",
+          "is_duplicate": false,
+          "duplicate_type": "distinct_feature",
+          "justification": "Playlist search bug vs. offline playback sync issue."
+        },
+        {
+          "ticket_a": "gp_1007",
+          "ticket_b": "gp_1008",
+          "is_duplicate": false,
+          "duplicate_type": "distinct_feature",
+          "justification": "Settings crash vs. battery drain."
+        }
+      ]
+    },
+    "customer_support_tickets": {
+      "pairs": [
+        {
+          "ticket_a": "cs_301",
+          "ticket_b": "cs_306",
+          "is_duplicate": false,
+          "duplicate_type": "related_but_distinct",
+          "justification": "Google OAuth 403 authorization error vs. SAML infinite redirect loop — related auth domain, but different identity protocols and failure modes."
+        },
+        {
+          "ticket_a": "cs_301",
+          "ticket_b": "cs_307",
+          "is_duplicate": false,
+          "duplicate_type": "distinct_feature",
+          "justification": "OAuth login error vs. billing invoice seat count."
+        },
+        {
+          "ticket_a": "cs_302",
+          "ticket_b": "cs_308",
+          "is_duplicate": false,
+          "duplicate_type": "related_but_distinct",
+          "justification": "Password reset token expired 404 vs. magic link email spam filter — distinct recovery mechanisms."
+        },
+        {
+          "ticket_a": "cs_304",
+          "ticket_b": "cs_305",
+          "is_duplicate": false,
+          "duplicate_type": "distinct_feature",
+          "justification": "Session auto-logout vs. inviting team members."
+        }
+      ]
+    },
+    "amazon_product_reviews": {
+      "pairs": [
+        {
+          "ticket_a": "AMZ_901_B00EXAMPLE1",
+          "ticket_b": "AMZ_902_B00EXAMPLE1",
+          "is_duplicate": false,
+          "duplicate_type": "related_but_distinct",
+          "justification": "Active usage battery runtime (4 hours vs 12 hours) vs. standby overnight drain (60%). Related battery domain, but distinct operational modes."
+        },
+        {
+          "ticket_a": "AMZ_901_B00EXAMPLE1",
+          "ticket_b": "AMZ_904_B00EXAMPLE1",
+          "is_duplicate": false,
+          "duplicate_type": "distinct_feature",
+          "justification": "Battery runtime duration vs. fast charging thermal overheating fire hazard."
+        },
+        {
+          "ticket_a": "AMZ_903_B00EXAMPLE2",
+          "ticket_b": "AMZ_904_B00EXAMPLE1",
+          "is_duplicate": false,
+          "duplicate_type": "distinct_feature",
+          "justification": "Fast shipping praise vs. fast charging overheat."
+        }
+      ]
+    }
+  }
+}

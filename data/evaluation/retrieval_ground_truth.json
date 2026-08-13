@@ -1,0 +1,237 @@
+{
+  "version": "1.0",
+  "description": "Human-annotated retrieval ground truth dataset for Confidence Memo Agent across 4 public domain datasets. Queries are independently composed to avoid verbatim text leakage and include positive, negative, and edge-case queries.",
+  "datasets": [
+    "google_play_reviews",
+    "github_issues",
+    "customer_support_tickets",
+    "amazon_product_reviews"
+  ],
+  "queries": [
+    {
+      "query_id": "Q_GP_01",
+      "dataset": "google_play_reviews",
+      "query": "eye strain reading at night dark background",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["gp_1001", "gp_1002", "gp_1003", "gp_1004", "gp_1009", "gp_1010"],
+      "irrelevant_ticket_ids": ["gp_1005", "gp_1006", "gp_1007", "gp_1008"],
+      "human_justification": "Tickets gp_1001, 1002, 1003, 1004, 1009, 1010 explicitly request dark theme/night mode to alleviate brightness and eye pain."
+    },
+    {
+      "query_id": "Q_GP_02",
+      "dataset": "google_play_reviews",
+      "query": "special character playlist search failure",
+      "query_type": "keyword",
+      "relevant_ticket_ids": ["gp_1005"],
+      "irrelevant_ticket_ids": ["gp_1001", "gp_1002", "gp_1003", "gp_1004", "gp_1006", "gp_1007", "gp_1008", "gp_1009", "gp_1010"],
+      "human_justification": "Only gp_1005 discusses playlist search errors with non-standard characters."
+    },
+    {
+      "query_id": "Q_GP_03",
+      "dataset": "google_play_reviews",
+      "query": "application freeze force close on Android OS settings",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["gp_1007"],
+      "irrelevant_ticket_ids": ["gp_1001", "gp_1002", "gp_1003", "gp_1004", "gp_1005", "gp_1006", "gp_1008", "gp_1009", "gp_1010"],
+      "human_justification": "Only gp_1007 reports app crashing when opening settings on Android 14."
+    },
+    {
+      "query_id": "Q_GP_04",
+      "dataset": "google_play_reviews",
+      "query": "listen to tracks without internet connection",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["gp_1006"],
+      "irrelevant_ticket_ids": ["gp_1001", "gp_1002", "gp_1003", "gp_1004", "gp_1005", "gp_1007", "gp_1008", "gp_1009", "gp_1010"],
+      "human_justification": "Only gp_1006 discusses offline playback and sync issues."
+    },
+    {
+      "query_id": "Q_GP_05",
+      "dataset": "google_play_reviews",
+      "query": "audio streaming power consumption drain",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["gp_1008"],
+      "irrelevant_ticket_ids": ["gp_1001", "gp_1002", "gp_1003", "gp_1004", "gp_1005", "gp_1006", "gp_1007", "gp_1009", "gp_1010"],
+      "human_justification": "Only gp_1008 reports high battery usage during background streaming."
+    },
+    {
+      "query_id": "Q_GP_06_NEG",
+      "dataset": "google_play_reviews",
+      "query": "cryptocurrency bitcoin payment integration in app",
+      "query_type": "negative_control",
+      "relevant_ticket_ids": [],
+      "irrelevant_ticket_ids": ["gp_1001", "gp_1002", "gp_1003", "gp_1004", "gp_1005", "gp_1006", "gp_1007", "gp_1008", "gp_1009", "gp_1010"],
+      "human_justification": "Zero tickets in the Google Play corpus reference crypto or bitcoin; tests system false positive resistance."
+    },
+    {
+      "query_id": "Q_GH_01",
+      "dataset": "github_issues",
+      "query": "search query latency and timeout on big repositories",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["GH-201", "GH-205"],
+      "irrelevant_ticket_ids": ["GH-202", "GH-203", "GH-204", "GH-206", "GH-207", "GH-208"],
+      "human_justification": "GH-201 concerns 504 timeouts on >50k files; GH-205 concerns latency degradation under concurrent queries."
+    },
+    {
+      "query_id": "Q_GH_02",
+      "dataset": "github_issues",
+      "query": "boolean filter parsing drops author and tag criteria",
+      "query_type": "keyword",
+      "relevant_ticket_ids": ["GH-202"],
+      "irrelevant_ticket_ids": ["GH-201", "GH-203", "GH-204", "GH-205", "GH-206", "GH-207", "GH-208"],
+      "human_justification": "GH-202 describes search filters dropping author: and tag: parameters."
+    },
+    {
+      "query_id": "Q_GH_03",
+      "dataset": "github_issues",
+      "query": "approximate string matching returns unrelated results",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["GH-203"],
+      "irrelevant_ticket_ids": ["GH-201", "GH-202", "GH-204", "GH-205", "GH-206", "GH-207", "GH-208"],
+      "human_justification": "GH-203 describes fuzzy search matching login with logging."
+    },
+    {
+      "query_id": "Q_GH_04",
+      "dataset": "github_issues",
+      "query": "regular expression pattern search in code bar",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["GH-204"],
+      "irrelevant_ticket_ids": ["GH-201", "GH-202", "GH-203", "GH-205", "GH-206", "GH-207", "GH-208"],
+      "human_justification": "GH-204 requests regex matching support."
+    },
+    {
+      "query_id": "Q_GH_05",
+      "dataset": "github_issues",
+      "query": "daemon memory accumulation and socket leak",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["GH-206"],
+      "irrelevant_ticket_ids": ["GH-201", "GH-202", "GH-203", "GH-204", "GH-205", "GH-207", "GH-208"],
+      "human_justification": "GH-206 reports RSS growth from unclosed WebSockets."
+    },
+    {
+      "query_id": "Q_GH_06",
+      "dataset": "github_issues",
+      "query": "access token refresh failure in background auth",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["GH-207"],
+      "irrelevant_ticket_ids": ["GH-201", "GH-202", "GH-203", "GH-204", "GH-205", "GH-206", "GH-208"],
+      "human_justification": "GH-207 describes silent OAuth refresh token expiration failure."
+    },
+    {
+      "query_id": "Q_GH_07",
+      "dataset": "github_issues",
+      "query": "quick command palette hotkey keyboard shortcut",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["GH-208"],
+      "irrelevant_ticket_ids": ["GH-201", "GH-202", "GH-203", "GH-204", "GH-205", "GH-206", "GH-207"],
+      "human_justification": "GH-208 requests Cmd+K / Ctrl+K keyboard shortcut."
+    },
+    {
+      "query_id": "Q_GH_08_NEG",
+      "dataset": "github_issues",
+      "query": "iOS Swift compilation linker error architecture arm64",
+      "query_type": "negative_control",
+      "relevant_ticket_ids": [],
+      "irrelevant_ticket_ids": ["GH-201", "GH-202", "GH-203", "GH-204", "GH-205", "GH-206", "GH-207", "GH-208"],
+      "human_justification": "Zero tickets relate to iOS Swift compilation."
+    },
+    {
+      "query_id": "Q_CS_01",
+      "dataset": "customer_support_tickets",
+      "query": "single sign on Google workspace 403 access denied",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["cs_301"],
+      "irrelevant_ticket_ids": ["cs_302", "cs_303", "cs_304", "cs_305", "cs_306", "cs_307", "cs_308"],
+      "human_justification": "cs_301 describes OAuth 403 authorization error during SSO."
+    },
+    {
+      "query_id": "Q_CS_02",
+      "dataset": "customer_support_tickets",
+      "query": "credential recovery URL expiration 404 error",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["cs_302"],
+      "irrelevant_ticket_ids": ["cs_301", "cs_303", "cs_304", "cs_305", "cs_306", "cs_307", "cs_308"],
+      "human_justification": "cs_302 describes broken password reset link with 404 Expired Token."
+    },
+    {
+      "query_id": "Q_CS_03",
+      "dataset": "customer_support_tickets",
+      "query": "2FA multi-factor authentication SMS delivery failure",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["cs_303"],
+      "irrelevant_ticket_ids": ["cs_301", "cs_302", "cs_304", "cs_305", "cs_306", "cs_307", "cs_308"],
+      "human_justification": "cs_303 concerns SMS 2FA code non-delivery to UK numbers."
+    },
+    {
+      "query_id": "Q_CS_04",
+      "dataset": "customer_support_tickets",
+      "query": "unexpected session logout while navigating portal",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["cs_304"],
+      "irrelevant_ticket_ids": ["cs_301", "cs_302", "cs_303", "cs_305", "cs_306", "cs_307", "cs_308"],
+      "human_justification": "cs_304 describes automatic logout every 5 minutes."
+    },
+    {
+      "query_id": "Q_CS_05",
+      "dataset": "customer_support_tickets",
+      "query": "infinite redirect loop on enterprise identity provider SAML",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["cs_306"],
+      "irrelevant_ticket_ids": ["cs_301", "cs_302", "cs_303", "cs_304", "cs_305", "cs_307", "cs_308"],
+      "human_justification": "cs_306 concerns continuous redirect loop during SAML authentication."
+    },
+    {
+      "query_id": "Q_CS_06",
+      "dataset": "customer_support_tickets",
+      "query": "subscription billing seat count invoice discrepancies",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["cs_307"],
+      "irrelevant_ticket_ids": ["cs_301", "cs_302", "cs_303", "cs_304", "cs_305", "cs_306", "cs_308"],
+      "human_justification": "cs_307 reports incorrect seat count on invoice."
+    },
+    {
+      "query_id": "Q_CS_07",
+      "dataset": "customer_support_tickets",
+      "query": "passwordless email link delivered to junk folder",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["cs_308"],
+      "irrelevant_ticket_ids": ["cs_301", "cs_302", "cs_303", "cs_304", "cs_305", "cs_306", "cs_307"],
+      "human_justification": "cs_308 concerns magic link emails flagged as spam."
+    },
+    {
+      "query_id": "Q_AMZ_01",
+      "dataset": "amazon_product_reviews",
+      "query": "standby idle power depletion overnight",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["AMZ_902_B00EXAMPLE1"],
+      "irrelevant_ticket_ids": ["AMZ_901_B00EXAMPLE1", "AMZ_903_B00EXAMPLE2", "AMZ_904_B00EXAMPLE1", "AMZ_905_B00EXAMPLE1"],
+      "human_justification": "AMZ_902 reports 60% battery drain overnight on standby."
+    },
+    {
+      "query_id": "Q_AMZ_02",
+      "dataset": "amazon_product_reviews",
+      "query": "high temperature thermal risk when fast charging",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["AMZ_904_B00EXAMPLE1"],
+      "irrelevant_ticket_ids": ["AMZ_901_B00EXAMPLE1", "AMZ_902_B00EXAMPLE1", "AMZ_903_B00EXAMPLE2", "AMZ_905_B00EXAMPLE1"],
+      "human_justification": "AMZ_904 describes burning hot device during fast charging as a fire hazard."
+    },
+    {
+      "query_id": "Q_AMZ_03",
+      "dataset": "amazon_product_reviews",
+      "query": "overall short battery runtime compared to manufacturer specs",
+      "query_type": "natural_language",
+      "relevant_ticket_ids": ["AMZ_901_B00EXAMPLE1", "AMZ_902_B00EXAMPLE1", "AMZ_905_B00EXAMPLE1"],
+      "irrelevant_ticket_ids": ["AMZ_903_B00EXAMPLE2", "AMZ_904_B00EXAMPLE1"],
+      "human_justification": "AMZ_901 (dies in 4 hours vs 12 advertised), AMZ_902 (drains on standby), and AMZ_905 (requests low-power mode to extend runtime) all address insufficient operational runtime."
+    },
+    {
+      "query_id": "Q_AMZ_04_NEG",
+      "dataset": "amazon_product_reviews",
+      "query": "waterproof IP68 water submersion resistance rating",
+      "query_type": "negative_control",
+      "relevant_ticket_ids": [],
+      "irrelevant_ticket_ids": ["AMZ_901_B00EXAMPLE1", "AMZ_902_B00EXAMPLE1", "AMZ_903_B00EXAMPLE2", "AMZ_904_B00EXAMPLE1", "AMZ_905_B00EXAMPLE1"],
+      "human_justification": "Zero reviews discuss water resistance or IP ratings."
+    }
+  ]
+}

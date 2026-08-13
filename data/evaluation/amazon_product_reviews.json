@@ -1,0 +1,42 @@
+[
+  {
+    "reviewerID": "AMZ_901",
+    "asin": "B00EXAMPLE1",
+    "summary": "Battery life does not last through full workday",
+    "reviewText": "The device battery dies after barely 4 hours of moderate usage. Product description claimed 12 hours of continuous battery life. Very disappointed.",
+    "overall": 2.0,
+    "reviewTime": "2026-01-04"
+  },
+  {
+    "reviewerID": "AMZ_902",
+    "asin": "B00EXAMPLE1",
+    "summary": "Battery drains quickly even in standby mode",
+    "reviewText": "Leaving the unit on standby overnight drains over 60% battery. Needs a firmware power management update immediately.",
+    "overall": 1.0,
+    "reviewTime": "2026-01-08"
+  },
+  {
+    "reviewerID": "AMZ_903",
+    "asin": "B00EXAMPLE2",
+    "summary": "Fast shipping and great build quality",
+    "reviewText": "Arrived within 2 days. The aluminum chassis feels premium and sturdy.",
+    "overall": 5.0,
+    "reviewTime": "2026-01-12"
+  },
+  {
+    "reviewerID": "AMZ_904",
+    "asin": "B00EXAMPLE1",
+    "summary": "Severe battery overheating during fast charging",
+    "reviewText": "When plugged into the fast charger, the battery gets burning hot to the touch and stops charging at 50%. Potential fire hazard!",
+    "overall": 1.0,
+    "reviewTime": "2026-01-15"
+  },
+  {
+    "reviewerID": "AMZ_905",
+    "asin": "B00EXAMPLE1",
+    "summary": "Needs battery optimization mode",
+    "reviewText": "Please add a low-power mode or battery saver toggle in the companion app to extend battery runtime.",
+    "overall": 3.0,
+    "reviewTime": "2026-01-20"
+  }
+]

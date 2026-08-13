@@ -7,42 +7,55 @@ This document describes the module architecture of the **Confidence Memo Agent**
 ## 📐 High-Level Architecture Diagram
 
 ```text
-                        ┌────────────────────────┐
-                        │ User Feature Proposal  │
-                        └───────────┬────────────┘
-                                    │
-                                    ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│                        Retrieval Layer (src/)                          │
-│                                                                        │
-│   retrieval.py (Public Wrapper)                                        │
-│        │                                                               │
-│        ▼                                                               │
-│   semantic_search.py (Search Coordinator)                              │
-│        ├──> embedding_generator.py (Singleton Model & Dataset Cache)   │
-│        └──> similarity_engine.py   (Pure NumPy Cosine Vector Search)   │
-└───────────────────────────┬────────────────────────────────────────────┘
-                            │ Matched Tickets DataFrame
-                            ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│                   Prompt Builder Layer (src/)                          │
-│                                                                        │
-│   prompt_builder.py  <──> prompts/evidence_prompt.txt                  │
-└───────────────────────────┬────────────────────────────────────────────┘
-                            │ Formatted Prompt String
-                            ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│                      Gemini Client Layer (src/)                        │
-│                                                                        │
-│   gemini_client.py   <──> Google Gemini API (gemini-3.5-flash)          │
-└───────────────────────────┬────────────────────────────────────────────┘
-                            │ API Text Response
-                            ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│                     Orchestration Layer (src/)                         │
-│                                                                        │
-│   memo_service.py    ───> Returns Evidence Memo String               │
-└────────────────────────────────────────────────────────────────────────┘
+                        ┌────────────────────────────────────────┐
+                        │         User Feature Proposal          │
+                        │ (Effort, Impact, Strategy, Cost, Risk) │
+                        └───────────────────┬────────────────────┘
+                                            │
+                                            ▼
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        Ingestion & Connector Layer (src/)                              │
+│                                                                                        │
+│   preprocessing/ (CSV, Excel, JSON, TXT, PDF parser + normalizer)                      │
+│   connectors/    (Google Sheets, Zendesk, Notion, Intercom APIs)                       │
+│   evaluation/    (Google Play, GitHub, Customer Support, Amazon Adapters & Registry)   │
+└───────────────────────────────────────────┬────────────────────────────────────────────┘
+                                            │ Standard DataFrame [ticket_id, created_at, topic, message]
+                                            ▼
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        Retrieval & Intelligence Layer (src/)                           │
+│                                                                                        │
+│   retrieval.py               (Public Wrapper)                                          │
+│   semantic_search.py         (Vector Dot Product Cosine Search)                        │
+│   embedding_generator.py     (Singleton SentenceTransformer & MD5 Cache)               │
+│   evidence_validation.py     (Similarity Threshold Gating)                             │
+│   evidence_deduplication.py  (Exact Text Normalization & Dense Cosine Matrix)          │
+│   evidence_clustering.py     (Hierarchical Semantic Clustering & Medoids)              │
+│   evidence_scoring.py        (Deterministic 5-Factor Score & Caps)                     │
+│   decision_engine.py         (Multi-Criteria Matrix, Gating & Trade-Offs)               │
+│   historical_calibration.py  (Brier Score, ECE & Abstract Storage)                     │
+└───────────────────────────────────────────┬────────────────────────────────────────────┘
+                                            │ Structured Decision & Evidence Telemetry
+                                            ▼
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                   Prompt Builder Layer (src/ & prompts/)                               │
+│                                                                                        │
+│   prompt_builder.py  <──> prompts/evidence_prompt.txt, prompts/decision_prompt.txt     │
+└───────────────────────────────────────────┬────────────────────────────────────────────┘
+                                            │ Fully Substituted Prompt String
+                                            ▼
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                      Gemini Client Layer (src/)                                        │
+│                                                                                        │
+│   gemini_client.py   <──> Google Gemini API (gemini-3.5-flash)                         │
+└───────────────────────────────────────────┬────────────────────────────────────────────┘
+                                            │ API Text Response (Explanation Only)
+                                            ▼
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                     Orchestration Layer (src/)                                         │
+│                                                                                        │
+│   memo_service.py    ───> Returns Evidence Memo / Decision Memo Markdown String        │
+└────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -51,94 +64,59 @@ This document describes the module architecture of the **Confidence Memo Agent**
 
 ### 1. `config.py`
 - **Purpose:** Centralized configuration management and model default parameters.
-- **Inputs:** Environment variables (`EMBEDDING_MODEL_NAME`, `DEFAULT_TOP_K`, `DEFAULT_SIMILARITY_THRESHOLD`).
-- **Outputs:** Module-level constants (`MODEL_NAME`, `DEFAULT_TOP_K`, `DEFAULT_SIMILARITY_THRESHOLD`).
-- **Responsibilities:**
-  - Read environment overrides for embedding model selection and search thresholds.
-  - Provide fallback default constants across the codebase.
-- **Dependencies:** `os`.
-
----
+- **Inputs:** Environment variables (`EMBEDDING_MODEL_NAME`, `DEFAULT_TOP_K`, `DEFAULT_SIMILARITY_THRESHOLD`, `EVIDENCE_SIMILARITY_THRESHOLD`, `DEDUPLICATION_SIMILARITY_THRESHOLD`, `CLUSTERING_DISTANCE_THRESHOLD`).
+- **Outputs:** Module-level constants across the codebase.
 
 ### 2. `embedding_generator.py`
 - **Purpose:** Vector embedding generation, neural model lifecycle management, and ticket dataset caching.
 - **Inputs:** Raw text strings or pandas DataFrame (`topic`, `message` columns).
-- **Outputs:** 2D NumPy array of L2-normalized dense embeddings (`np.ndarray` of shape `(N, 384)`).
+- **Outputs:** 2D NumPy array of L2-normalized dense embeddings (`(N, 384)`).
 - **Responsibilities:**
-  - Maintain a singleton instance of `SentenceTransformer('all-MiniLM-L6-v2')` to avoid re-loading weights on every query.
-  - Calculate MD5 dataset fingerprints for support ticket DataFrames.
-  - Maintain an in-memory embedding cache dictionary to reuse ticket vector matrices instantly across queries.
-- **Dependencies:** `sentence_transformers`, `pandas`, `numpy`, `hashlib`, `src.config`.
-
----
+  - Maintain a singleton instance of `SentenceTransformer('all-MiniLM-L6-v2')`.
+  - In-memory dataset MD5 hash caching to avoid re-encoding.
 
 ### 3. `similarity_engine.py`
 - **Purpose:** Pure NumPy vector math for computing cosine similarity and candidate ranking.
-- **Inputs:** Ticket embedding matrix (`N, D`), query vector (`1, D`), `top_k` integer, `threshold` float.
+- **Inputs:** Ticket embedding matrix (`N, D`), query vector (`1, D`), `top_k`, `threshold`.
 - **Outputs:** List of `(index, similarity_score)` tuples sorted in descending order of relevance.
-- **Responsibilities:**
-  - Compute matrix dot-product similarity ($\mathbf{E}_{\text{tickets}} \cdot \mathbf{e}_{\text{query}}^T$).
-  - Rank candidate indices descending by similarity score.
-  - Filter out candidates scoring below the similarity threshold up to `top_k`.
-  - Validate array shapes and dimensions without loading heavy neural network dependencies.
-- **Dependencies:** `numpy`, `src.config`.
 
----
+### 4. `evidence_validation.py`
+- **Purpose:** Evidence relevance gating against `EVIDENCE_SIMILARITY_THRESHOLD` (0.60).
+- **Responsibilities:** Pure filtering module that excludes tickets scoring below threshold.
 
-### 4. `semantic_search.py`
-- **Purpose:** Search coordinator combining `EmbeddingGenerator` and `SimilarityEngine`.
-- **Inputs:** Support tickets DataFrame, query string or keyword list, optional `top_k` and `threshold` parameters.
-- **Outputs:** Filtered subset `pd.DataFrame` containing the most relevant tickets sorted by semantic similarity.
-- **Responsibilities:**
-  - Normalize query input types (handling string queries or keyword lists).
-  - Invoke `EmbeddingGenerator` to encode the dataset and query string.
-  - Invoke `SimilarityEngine` to compute vector similarity and pick top-k indices.
-  - Return a sliced DataFrame of relevant ticket rows.
-- **Dependencies:** `pandas`, `src.embedding_generator`, `src.similarity_engine`, `src.config`.
+### 5. `evidence_deduplication.py`
+- **Purpose:** Exact text normalization and dense vector semantic deduplication.
+- **Responsibilities:** Detects duplicate inquiries, applies representative selection strategies (`longest`, `highest_similarity`, `earliest`), and provides duplicate telemetry.
 
----
+### 6. `evidence_clustering.py`
+- **Purpose:** Hierarchical semantic feedback clustering and medoid theme extraction.
+- **Responsibilities:** Groups tickets using cosine distance clustering, extracts theme labels, and calculates intra-cluster coherence.
 
-### 5. `retrieval.py`
-- **Purpose:** Public backward-compatible interface wrapper for ticket retrieval.
-- **Inputs:** `df` (`pd.DataFrame`), `keywords` (`list[str] | str`).
-- **Outputs:** `relevant_tickets` (`pd.DataFrame`).
-- **Responsibilities:**
-  - Expose a simple, clean `retrieve_tickets` entry point.
-  - Delegate execution directly to `semantic_search.search_tickets`.
-- **Dependencies:** `pandas`, `src.semantic_search`.
+### 7. `evidence_scoring.py`
+- **Purpose:** 5-factor deterministic evidence scoring engine (Volume, Severity, Sentiment Consistency, Recency, User Diversity).
+- **Responsibilities:** Clamps scores $0-100$ and applies single/two-ticket score caps.
 
----
+### 8. `decision_engine.py`
+- **Purpose:** Multi-criteria product decision engine.
+- **Inputs:** Evidence score, engineering effort, business impact, strategic alignment, cost, risk.
+- **Outputs:** Deterministic recommendation (`PROCEED_TO_BUILD`, `VALIDATE_FURTHER`, `PROTOTYPE_OR_SPIKE`, `DEPRIORITIZE`, `REJECT`), priority score, assumptions, risks, trade-offs.
 
-### 6. `prompt_builder.py`
-- **Purpose:** Formats retrieved tickets and constructs the evidence analysis prompt.
-- **Inputs:** `proposal` (`str`), `df_tickets` (`pd.DataFrame`), optional `template_path` (`str`).
-- **Outputs:** Formatted prompt string (`str`).
-- **Responsibilities:**
-  - Format ticket DataFrame rows into clear, structured ticket strings.
-  - Read prompt template from file (`prompts/evidence_prompt.txt`) or default inline template.
-  - Substitute `{proposal}` and `{tickets_text}` placeholders.
-- **Dependencies:** `os`, `pandas`.
+### 9. `historical_calibration.py`
+- **Purpose:** Storage-abstracted historical outcome logging and statistical calibration metrics.
+- **Responsibilities:** Calculates Brier score, Expected Calibration Error (ECE), reliability diagrams, and calibration drift.
 
----
+### 10. `evaluation/` Package
+- **`adapters.py`**: Domain adapters for Google Play, GitHub Issues, Customer Support, and Amazon Reviews.
+- **`benchmark.py`**: Multi-scale latency & memory benchmarking engine.
+- **`quality.py`**: Evaluation metrics suite (Precision@k, Recall@k, MRR, MAP, F1, Silhouette, ECE).
+- **`threshold_optimizer.py`**: Empirical grid sweep and sensitivity analysis.
+- **`e2e_validator.py`**: Multi-domain pipeline validation and example generator.
 
-### 7. `gemini_client.py`
-- **Purpose:** Interface client for Google Gemini LLM API interactions.
-- **Inputs:** Prompt string (`str`).
-- **Outputs:** Generated Markdown text response (`str`).
-- **Responsibilities:**
-  - Manage `google.genai.Client` lifecycle using `GEMINI_API_KEY`.
-  - Execute API calls against `gemini-3.5-flash`.
-  - Implement exponential backoff retry logic for transient errors (`429`, `500`, `503`, `504`).
-  - Fail fast on terminal errors (`400`, `403`).
-- **Dependencies:** `google.genai`, `google.genai.errors`, `os`, `time`, `logging`.
+### 11. `prompt_builder.py`
+- **Purpose:** Formats tickets, scoring, telemetry, decision outputs, assumptions, and risks into strict prompt templates.
 
----
+### 12. `gemini_client.py`
+- **Purpose:** Robust Google Gemini API client with exponential backoff retries for transient errors.
 
-### 8. `memo_service.py`
-- **Purpose:** End-to-end orchestration layer for the Confidence Memo Agent.
-- **Inputs:** `df` (`pd.DataFrame`), `keywords` (`list[str]`), `proposal` (`str`), optional `template_path` (`str`).
-- **Outputs:** Raw Evidence Memo Markdown text (`str`).
-- **Responsibilities:**
-  - Execute pipeline sequence: `retrieve_tickets` ➔ `build_evidence_prompt` ➔ `gemini_client.generate_response`.
-  - Provide a single unified method call for application consumption.
-- **Dependencies:** `pandas`, `src.retrieval`, `src.prompt_builder`, `src.gemini_client`.
+### 13. `memo_service.py`
+- **Purpose:** Unified orchestration layer for Evidence Memos and Decision Memos.

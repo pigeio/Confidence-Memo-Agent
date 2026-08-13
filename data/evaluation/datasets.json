@@ -1,0 +1,36 @@
+{
+  "datasets": [
+    {
+      "name": "google_play_reviews",
+      "format": "csv",
+      "path": "data/evaluation/google_play_reviews.csv",
+      "adapter": "GooglePlayAdapter",
+      "domain": "Mobile App User Feedback",
+      "description": "App store user reviews covering UI preferences, theme requests, crashes, and performance issues."
+    },
+    {
+      "name": "github_issues",
+      "format": "json",
+      "path": "data/evaluation/github_issues.json",
+      "adapter": "GitHubIssuesAdapter",
+      "domain": "Developer & Software Issue Tracker",
+      "description": "Technical issue tickets tracking bugs, search performance, authentication sync, and feature requests."
+    },
+    {
+      "name": "customer_support_tickets",
+      "format": "csv",
+      "path": "data/evaluation/customer_support_tickets.csv",
+      "adapter": "CustomerSupportAdapter",
+      "domain": "Enterprise SaaS Customer Support",
+      "description": "Multi-category support tickets reporting authentication failures, SSO issues, and billing questions."
+    },
+    {
+      "name": "amazon_product_reviews",
+      "format": "json",
+      "path": "data/evaluation/amazon_product_reviews.json",
+      "adapter": "AmazonReviewsAdapter",
+      "domain": "Hardware & E-commerce Product Reviews",
+      "description": "Customer hardware reviews highlighting battery life, overheating, standby drain, and build quality."
+    }
+  ]
+}
